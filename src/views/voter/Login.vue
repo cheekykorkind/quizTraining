@@ -3,32 +3,20 @@
     <div class="row mt-3 h-100 justify-content-center align-items-center">
       <div class="col p-0">
         <div class="row mt-3 justify-content-center align-items-center">
-          <div class="col p-0"> ID </div>
-          <input
-            type="text"
-            class="form-control"
-            v-model="username"
-          >
+          <div class="col p-0">ID</div>
+          <input type="text" class="form-control" v-model="username" />
         </div>
         <div class="row mt-3 justify-content-center align-items-center">
-          <div class="col p-0"> password </div>
-          <input
-            type="text"
-            class="form-control"
-            v-model="password"
-          >
+          <div class="col p-0">password</div>
+          <input type="text" class="form-control" v-model="password" />
         </div>
         <div class="row mt-3 justify-content-center align-items-center">
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="doLogin()"
-          > login </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="doLogout()"
-          > Logout </button>
+          <button type="button" class="btn btn-primary" @click="doLogin()">
+            login
+          </button>
+          <button type="button" class="btn btn-primary" @click="doLogout()">
+            Logout
+          </button>
         </div>
       </div>
     </div>
@@ -37,35 +25,37 @@
 
 <script>
 // firebase モジュール
-import firebase from 'firebase';
+import firebase from "firebase";
 
 export default {
   name: "Login",
   components: {},
   data() {
     return {
-      user: {},  // ユーザー情報
+      user: {}, // ユーザー情報
       username: null,
-      password: null,
-    }
+      password: null
+    };
   },
   created() {
     firebase.auth().onAuthStateChanged(user => {
-      this.user = user ? user : {}
-    })
+      this.user = user ? user : {};
+    });
   },
   methods: {
     // ログイン処理
     doLogin() {
-      firebase.auth().signInWithEmailAndPassword(this.username, this.password)
-        .then(res => {
-          this.$router.push({ name: 'VoterTop' });
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.username, this.password)
+        .then(() => {
+          this.$router.push({ name: "VoterTop" });
         });
     },
     // ログアウト処理
     doLogout() {
-      firebase.auth().signOut()
-    },
+      firebase.auth().signOut();
+    }
   }
 };
 </script>
