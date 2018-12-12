@@ -24,6 +24,11 @@
             class="btn btn-primary"
             @click="doLogin()"
           > login </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="doLogout()"
+          > Logout </button>
         </div>
       </div>
     </div>
@@ -32,10 +37,10 @@
 
 <script>
 // firebase モジュール
-import firebase from 'firebase'
+import firebase from 'firebase';
 
 export default {
-  name: "home",
+  name: "Login",
   components: {},
   data() {
     return {
@@ -47,15 +52,15 @@ export default {
   created() {
     firebase.auth().onAuthStateChanged(user => {
       this.user = user ? user : {}
-      console.log(this.user);
     })
   },
   methods: {
     // ログイン処理
     doLogin() {
-      firebase.auth().signInWithEmailAndPassword(this.username, this.password).then(res => {
-        console.log(res);
-      });
+      firebase.auth().signInWithEmailAndPassword(this.username, this.password)
+        .then(res => {
+          this.$router.push({ name: 'VoterTop' });
+        });
     },
     // ログアウト処理
     doLogout() {
