@@ -18,6 +18,6 @@ export default new Router({
       path: "/voter/top",
       name: "VoterTop",
       component: VoterTop
-    },
+    }
   ]
 });

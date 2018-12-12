@@ -1,21 +1,15 @@
 <template>
-  <h1> Top </h1>
+  <h1>Top</h1>
 </template>
 
 <script>
-// firebase モジュール
-import firebase from 'firebase'
-
 export default {
   name: "top",
   components: {},
   data() {
-    return {
-    }
+    return {};
   },
-  created() {
-  },
-  methods: {
-  }
+  created() {},
+  methods: {}
 };
 </script>
