@@ -5,7 +5,7 @@ import VoterTop from "./views/voter/Top.vue";
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
@@ -17,7 +17,9 @@ export default new Router({
     {
       path: "/voter/top",
       name: "VoterTop",
-      component: VoterTop
+      component: VoterTop,
     }
   ]
 });
+
+export default router;
