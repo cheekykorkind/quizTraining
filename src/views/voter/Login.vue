@@ -24,22 +24,38 @@
 </template>
 
 <script>
-// firebase モジュール
 import firebase from "firebase";
+import store from '../../store';
+import {mapState} from 'vuex';
 
 export default {
   name: "Login",
   components: {},
+  computed: {
+    ...mapState({
+      user: state => state.user,
+    })
+  },
   data() {
     return {
-      user: {}, // ユーザー情報
       username: null,
       password: null
     };
   },
   created() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.user = user ? user : {};
+    firebase.auth().onAuthStateChanged(u => {
+      if (u) {
+        // TODO u.uuidを使用してDBから情報取得する
+        const user = {
+          uuid: '1234567890',
+          name: 'test test',
+          administrator: true,
+          answerer: true,
+          voter: true,
+        };
+        this.$store.commit('setUser', user);
+        console.log(this.user);
+      }
     });
   },
   methods: {
