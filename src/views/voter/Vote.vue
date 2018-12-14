@@ -1,10 +1,10 @@
 <template>
-  <h1>Top</h1>
+  <h1>Vote</h1>
 </template>
 
 <script>
 export default {
-  name: "top",
+  name: "Vote",
   components: {},
   data() {
     return {};
