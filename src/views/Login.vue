@@ -25,7 +25,7 @@
 
 <script>
 import firebase from "firebase";
-import store from '../../store';
+import store from '../store';
 import {mapState} from 'vuex';
 
 export default {
