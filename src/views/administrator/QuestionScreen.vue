@@ -1,10 +1,10 @@
 <template>
-  <h1>QuizScreen</h1>
+  <h1>QuestionScreen</h1>
 </template>
 
 <script>
 export default {
-  name: "QuizScreen",
+  name: "QuestionScreen",
   components: {},
   data() {
     return {};
