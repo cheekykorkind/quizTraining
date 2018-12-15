@@ -8,6 +8,29 @@
   </div>
 </template>
 
+<script>
+import firebase from "firebase";
+
+export default {
+  created() {
+    // this.$store.dispatch("user/init", firebase.firestore().collection('users'));
+    firebase.auth().onAuthStateChanged(u => {
+      const ref_message = firebase.database().ref('users')
+      if (u && u.uid) {
+        ref_message.limitToLast(10).on('child_added', this.setUser)
+      } else {
+        ref_message.limitToLast(10).off('child_added', this.setUser)
+      }
+    });
+  },
+  methods: {
+    setUser(snap) {
+      console.log(snap.val());
+    }
+  }
+};
+</script>
+
 <style lang="scss">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
