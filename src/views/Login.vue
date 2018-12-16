@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       username: null,
-      password: null,
+      password: null
     };
   },
   methods: {
@@ -43,18 +43,13 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.username, this.password)
         .then(() => {
-          const uid = firebase.auth().currentUser.uid
-          const db = firebase.database();
-          db.ref('users/' + uid).once('value').then(snap => {
-            this.$store.commit("user/setUser", {uid: snap.key, user: snap.val()});
-          })
           this.$router.push({ name: "VoterVote" });
         });
     },
     // ログアウト処理
     doLogout() {
       firebase.auth().signOut();
-    },
+    }
   }
 };
 </script>

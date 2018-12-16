@@ -12,7 +12,7 @@ Vue.config.productionTip = false;
 import firebase from "firebase";
 import { firebaseEnv } from "./env";
 firebase.initializeApp(firebaseEnv);
-firebase.firestore().settings({timestampsInSnapshots: true});
+firebase.firestore().settings({ timestampsInSnapshots: true });
 
 import store from "./store";
 
