@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./views/Login";
+import PermissionError from "./views/PermissionError";
 import VoterVote from "./views/voter/Vote";
 import VoterTeam from "./views/voter/Team";
 import AnswererAnswer from "./views/answerer/Answer";
@@ -23,6 +24,11 @@ let router = new Router({
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/permission-error",
+      name: "PermissionError",
+      component: PermissionError
     },
     {
       path: "/voter/vote",

@@ -13,19 +13,34 @@ import firebase from "firebase";
 
 export default {
   created() {
-    // this.$store.dispatch("user/init", firebase.firestore().collection('users'));
     firebase.auth().onAuthStateChanged(u => {
-      const ref_message = firebase.database().ref('users')
-      if (u && u.uid) {
-        ref_message.limitToLast(10).on('child_added', this.setUser)
+      const db = firebase.database();
+      const ref_users = db.ref("users");
+      const ref_questions = db.ref("questions");
+      if (u) {
+        ref_users.limitToLast(10).on("child_added", this.setUser);
+        ref_questions.limitToLast(10).on("child_added", this.setQuestion);
+        db.ref("users/" + u.uid)
+          .once("value")
+          .then(snap => {
+            this.$store.commit("user/setCurrent", {
+              uid: snap.key,
+              user: snap.val()
+            });
+          });
       } else {
-        ref_message.limitToLast(10).off('child_added', this.setUser)
+        ref_users.limitToLast(10).off("child_added", this.setUser);
+        ref_questions.limitToLast(10).off("child_added", this.setQuestion);
       }
     });
   },
   methods: {
     setUser(snap) {
-      console.log(snap.val());
+      this.$store.commit("user/add", { uid: snap.key, user: snap.val() });
+    },
+    setQuestion(snap) {
+      this.$store.commit("question/add", snap.val());
+      this.$store.commit("question/setCurrent", snap.val());
     }
   }
 };

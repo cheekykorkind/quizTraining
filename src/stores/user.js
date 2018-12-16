@@ -1,21 +1,15 @@
 export default {
   namespaced: true,
   state: {
-    user: null,
-    uid: '',
+    list: [],
+    current: null
   },
   mutations: {
-    setUser(state, {uid, user}) {
-      state.uid = uid;
-      state.user = user;
+    add(state, { uid, user }) {
+      state.list.push({ uid: uid, ...user });
     },
-  },
-  actions: {
-  },
-  getters: {
-    currentUser: state => {
-      return state.user
+    setCurrent(state, { uid, user }) {
+      state.current = { uid: uid, ...user };
     }
-  },
-  plugins: {}
+  }
 };
