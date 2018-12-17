@@ -9,7 +9,6 @@ node_modules
 .env.local
 .env.*.local
 /src/env.js
-./src/env
 
 # Log files
 npm-debug.log*
