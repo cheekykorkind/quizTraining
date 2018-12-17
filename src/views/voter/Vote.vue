@@ -12,7 +12,7 @@ import Voter from "./mixins/Voter";
 
 export default {
   name: "Vote",
-  mixins: [ Voter ],
+  mixins: [Voter],
   computed: mapState({
     currentUser: state => state.user.current,
     questions: state => state.question.list,

@@ -1,15 +1,17 @@
+import { firebaseAction } from "vuexfire";
+
 export default {
   namespaced: true,
   state: {
     list: [],
     current: null
   },
-  mutations: {
-    add(state, question) {
-      state.list.push(question);
-    },
-    setCurrent(state, question) {
-      state.current = question;
-    }
+  actions: {
+    setListRef: firebaseAction(({ bindFirebaseRef }, ref) => {
+      bindFirebaseRef("list", ref);
+    }),
+    setCurrentRef: firebaseAction(({ bindFirebaseRef }, ref) => {
+      bindFirebaseRef("current", ref);
+    })
   }
 };
