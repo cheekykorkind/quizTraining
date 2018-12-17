@@ -7,16 +7,20 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import Voter from "./mixins/Voter";
 
 export default {
   name: "Vote",
   mixins: [Voter],
-  computed: mapState({
-    currentUser: state => state.user.current,
-    questions: state => state.question.list,
-    currentQuestion: state => state.question.current
-  })
+  computed: {
+    ...mapGetters({
+      currentQuestion: 'question/currentQuestion'
+    }),
+    ...mapState({
+      currentUser: state => state.user.current,
+      questions: state => state.question.list,
+    })
+  }
 };
 </script>
