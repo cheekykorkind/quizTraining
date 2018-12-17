@@ -5,6 +5,12 @@ import PermissionError from "./views/PermissionError";
 import VoterVote from "./views/voter/Vote";
 import VoterTeam from "./views/voter/Team";
 import AnswererAnswer from "./views/answerer/Answer";
+import AdministratorLogin from "./views/administrator/Login";
+import AdministratorInputPoints from "./views/administrator/InputPoints";
+import AdministratorSelectPlayer from "./views/administrator/SelectPlayer";
+import AdministratorSelectQuestion from "./views/administrator/SelectQuestion";
+import AdministratorSetQuestionStatus from "./views/administrator/SetQuestionStatus";
+
 import AdministratorQuestions from "./views/administrator/Questions";
 import AdministratorQuestion from "./views/administrator/Question";
 import AdministratorQuestionScreen from "./views/administrator/QuestionScreen";
@@ -30,22 +36,36 @@ let router = new Router({
       name: "PermissionError",
       component: PermissionError
     },
+    //-----------------------------------------------------------
+    // administrator
     {
-      path: "/voter/vote",
-      name: "VoterVote",
-      component: VoterVote,
+      path: "/administrator/login",
+      name: "AdministratorLogin",
+      component: AdministratorLogin,
       meta: { requireAuth: true }
     },
     {
-      path: "/voter/team",
-      name: "VoterTeam",
-      component: VoterTeam,
+      path: "/administrator/inputPoints",
+      name: "AdministratorInputPoints",
+      component: AdministratorInputPoints,
       meta: { requireAuth: true }
     },
     {
-      path: "/answerer/answer",
-      name: "AnswererAnswer",
-      component: AnswererAnswer,
+      path: "/administrator/selectPlayer",
+      name: "AdministratorSelectPlayer",
+      component: AdministratorSelectPlayer,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/administrator/selectQuestion",
+      name: "AdministratorSelectQuestion",
+      component: AdministratorSelectQuestion,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/administrator/setQuestionStatus",
+      name: "AdministratorSetQuestionStatus",
+      component: AdministratorSetQuestionStatus,
       meta: { requireAuth: true }
     },
     {
@@ -65,7 +85,29 @@ let router = new Router({
       name: "AdministratorQuestionScreen",
       component: AdministratorQuestionScreen,
       meta: { requireAuth: true }
-    }
+    },
+    //-----------------------------------------------------------
+    // answerer
+    {
+      path: "/answerer/answer",
+      name: "AnswererAnswer",
+      component: AnswererAnswer,
+      meta: { requireAuth: true }
+    },
+    //-----------------------------------------------------------
+    // voter
+    {
+      path: "/voter/team",
+      name: "VoterTeam",
+      component: VoterTeam,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/voter/vote",
+      name: "VoterVote",
+      component: VoterVote,
+      meta: { requireAuth: true }
+    },
   ]
 });
 
