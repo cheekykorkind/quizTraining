@@ -14,9 +14,6 @@
           <button type="button" class="btn btn-primary" @click="doLogin()">
             login
           </button>
-          <button type="button" class="btn btn-primary" @click="doLogout()">
-            Logout
-          </button>
         </div>
       </div>
     </div>
@@ -45,10 +42,6 @@ export default {
         .then(() => {
           this.$router.push({ name: "VoterVote" });
         });
-    },
-    // ログアウト処理
-    doLogout() {
-      firebase.auth().signOut();
     }
   }
 };

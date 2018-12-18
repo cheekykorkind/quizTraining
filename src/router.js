@@ -68,12 +68,12 @@ let router = new Router({
       component: AdministratorSetQuestionStatus,
       meta: { requireAuth: true }
     },
-    {
-      path: "/administrator/questions",
-      name: "AdministratorQuestions",
-      component: AdministratorQuestions,
-      meta: { requireAuth: true }
-    },
+    // {
+    //   path: "/administrator/questions",
+    //   name: "AdministratorQuestions",
+    //   component: AdministratorQuestions,
+    //   meta: { requireAuth: true }
+    // },
     {
       path: "/administrator/questions/1",
       name: "AdministratorQuestion",

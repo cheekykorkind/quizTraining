@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <HeaderNavigation/>
     <router-view />
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
+import HeaderNavigation from './components/HeaderNavigation.vue'
+// import Auth from "./globalMixin/Auth";
 
 export default {
+	components: {
+		HeaderNavigation
+	},
   created() {
     firebase.auth().onAuthStateChanged(u => {
       const db = firebase.database();
