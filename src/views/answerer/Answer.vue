@@ -3,7 +3,9 @@
     <h1>Answer</h1>
     <div v-if="currentUser">ログイン中のユーザ：{{ currentUser.name }}</div>
     <div v-if="currentQuestion">現在の問題：{{ currentQuestion.sentence }}</div>
-    <div v-if="currentUser && currentAnswerer == currentUser.name">あなたが回答者です</div>
+    <div v-if="currentUser && currentAnswerer == currentUser.name">
+      あなたが回答者です
+    </div>
     <b-button size="lg" variant="primary" @click="answer">回答する</b-button>
   </div>
 </template>
@@ -17,8 +19,8 @@ export default {
   mixins: [Answerer],
   computed: {
     ...mapGetters({
-      currentQuestion: 'question/currentQuestion',
-      currentAnswerer: 'question/currentAnswerer'
+      currentQuestion: "question/currentQuestion",
+      currentAnswerer: "question/currentAnswerer"
     }),
     ...mapState({
       currentUser: state => state.user.current,
@@ -27,9 +29,7 @@ export default {
     })
   },
   methods: {
-    answer: () => {
-      console.log("回答する")
-    }
+    answer: () => {}
   }
 };
 </script>

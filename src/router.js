@@ -11,9 +11,12 @@ import AdministratorSelectPlayer from "./views/administrator/SelectPlayer";
 import AdministratorSelectQuestion from "./views/administrator/SelectQuestion";
 import AdministratorSetQuestionStatus from "./views/administrator/SetQuestionStatus";
 
-import AdministratorQuestions from "./views/administrator/Questions";
-import AdministratorQuestion from "./views/administrator/Question";
-import AdministratorQuestionScreen from "./views/administrator/QuestionScreen";
+import AdministratorQuestionsIndex from "./views/administrator/questions/Index";
+import AdministratorQuestionsForm from "./views/administrator/questions/Form";
+import AdministratorQuestionsShow from "./views/administrator/questions/Show";
+import AdministratorQuestionsScreen from "./views/administrator/questions/Screen";
+import AdministratorQuestionMastersIndex from "./views/administrator/question_masters/Index";
+import AdministratorQuestionMastersForm from "./views/administrator/question_masters/Form";
 import firebase from "firebase";
 
 Vue.use(Router);
@@ -70,20 +73,38 @@ let router = new Router({
     },
     {
       path: "/administrator/questions",
-      name: "AdministratorQuestions",
-      component: AdministratorQuestions,
+      name: "AdministratorQuestionsIndex",
+      component: AdministratorQuestionsIndex,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/administrator/questions/new",
+      name: "AdministratorQuestionsForm",
+      component: AdministratorQuestionsForm,
       meta: { requireAuth: true }
     },
     {
       path: "/administrator/questions/1",
-      name: "AdministratorQuestion",
-      component: AdministratorQuestion,
+      name: "AdministratorQuestionsShow",
+      component: AdministratorQuestionsShow,
       meta: { requireAuth: true }
     },
     {
       path: "/administrator/questions/1/screen",
-      name: "AdministratorQuestionScreen",
-      component: AdministratorQuestionScreen,
+      name: "AdministratorQuestionsScreen",
+      component: AdministratorQuestionsScreen,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/administrator/question_masters",
+      name: "AdministratorQuestionMastersIndex",
+      component: AdministratorQuestionMastersIndex,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/administrator/question_masters/new",
+      name: "AdministratorQuestionMastersForm",
+      component: AdministratorQuestionMastersForm,
       meta: { requireAuth: true }
     },
     //-----------------------------------------------------------
@@ -107,7 +128,7 @@ let router = new Router({
       name: "VoterVote",
       component: VoterVote,
       meta: { requireAuth: true }
-    },
+    }
   ]
 });
 

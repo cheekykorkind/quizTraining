@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <b-container>
+      <router-view />
+    </b-container>
   </div>
 </template>
 
@@ -13,8 +15,10 @@ export default {
       const db = firebase.database();
       const ref_users = db.ref("users");
       const ref_questions = db.ref("questions");
+      const ref_questionMasters = db.ref("questionMasters");
       if (u) {
         const ref_user = db.ref("users/" + u.uid);
+        this.$store.dispatch("questionMaster/setListRef", ref_questionMasters);
         this.$store.dispatch("question/setListRef", ref_questions);
         this.$store.dispatch("user/setListRef", ref_users);
         this.$store.dispatch("user/setCurrentRef", ref_user);
@@ -22,7 +26,7 @@ export default {
         // TODO unbindする
       }
     });
-  },
+  }
 };
 </script>
 

@@ -15,11 +15,11 @@ export default {
   mixins: [Voter],
   computed: {
     ...mapGetters({
-      currentQuestion: 'question/currentQuestion'
+      currentQuestion: "question/currentQuestion"
     }),
     ...mapState({
       currentUser: state => state.user.current,
-      questions: state => state.question.list,
+      questions: state => state.question.list
     })
   }
 };
