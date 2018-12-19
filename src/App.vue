@@ -8,8 +8,7 @@
 <script>
 import firebase from "firebase";
 import HeaderNavigation from './components/HeaderNavigation.vue'
-// import Auth from "./globalMixin/Auth";
-
+  
 export default {
 	components: {
 		HeaderNavigation

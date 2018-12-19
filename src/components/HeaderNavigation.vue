@@ -6,26 +6,26 @@
           <router-link to="/voter/team" class="text-light">Quiz Traning</router-link>
         </li>
 
-        <li class="nav-item ml-4">
+        <li v-if="currentUser.name == 'admin'" class="nav-item ml-4">
           <router-link to="/administrator/inputPoints" class="text-light">inputPoints</router-link>
         </li>
-        <li class="nav-item ml-4">
+        <li v-if="currentUser.name == 'admin'" class="nav-item ml-4">
           <router-link to="/administrator/selectPlayer" class="text-light">selectPlayer</router-link>
         </li>
-        <li class="nav-item ml-4">
+        <li v-if="currentUser.name == 'admin'" class="nav-item ml-4">
           <router-link to="/administrator/selectQuestion" class="text-light">selectQuestion</router-link>
         </li>
-        <li class="nav-item ml-4">
+        <li v-if="currentUser.name == 'admin'" class="nav-item ml-4">
           <router-link to="/administrator/setQuestionStatus" class="text-light">setQuestionStatus</router-link>
         </li>
 
-        <li class="nav-item ml-4">
+        <li v-if="currentUser.voter == true" class="nav-item ml-4">
           <router-link to="/voter/team" class="text-light">VoterTeam</router-link>
         </li>
-        <li class="nav-item ml-4">
+        <li v-if="currentUser.voter == true" class="nav-item ml-4">
           <router-link to="/voter/vote" class="text-light">Vote</router-link>
         </li>
-        <li class="nav-item ml-4">
+        <li v-if="currentUser.voter != true && currentUser.name != 'admin'" class="nav-item ml-4">
           <router-link to="/answerer/answer" class="text-light">answer</router-link>
         </li>
       </ul>
@@ -51,6 +51,6 @@ export default {
     doLogout() {
       firebase.auth().signOut();
     }
-  }
+  },
 };
 </script>
