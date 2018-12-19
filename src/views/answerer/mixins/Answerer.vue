@@ -7,10 +7,10 @@ export default {
     firebase.auth().onAuthStateChanged(u => {
       const db = firebase.database();
       if (u) {
-        db.ref("users/" + u.uid)
+        db.ref('questions/1/answerer/jiho/answers/1')
           .once("value")
           .then(snap => {
-            if (!snap.val().answerer) {
+            if (!snap.val().isAnswerable) {
               this.$router.push({ name: "PermissionError" });
             }
           });

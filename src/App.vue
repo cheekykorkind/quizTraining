@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <HeaderNavigation/>
     <b-container>
       <router-view />
     </b-container>
@@ -8,8 +9,12 @@
 
 <script>
 import firebase from "firebase";
-
+import HeaderNavigation from './components/HeaderNavigation.vue'
+  
 export default {
+	components: {
+		HeaderNavigation
+	},
   created() {
     firebase.auth().onAuthStateChanged(u => {
       const db = firebase.database();
