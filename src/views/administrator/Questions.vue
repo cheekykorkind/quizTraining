@@ -3,8 +3,11 @@
 </template>
 
 <script>
+import Administrator from "./mixins/Administrator";
+
 export default {
   name: "Questions",
+  mixins: [Administrator],
   components: {},
   data() {
     return {};
