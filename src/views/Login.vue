@@ -40,7 +40,7 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.username, this.password)
         .then(() => {
-          this.$router.push({ name: "VoterVote" });
+          this.$router.push({ name: "Team" });
         });
     }
   }

@@ -3,15 +3,13 @@ import Router from "vue-router";
 import Login from "./views/Login";
 import PermissionError from "./views/PermissionError";
 import VoterVote from "./views/voter/Vote";
-import VoterTeam from "./views/voter/Team";
+import Team from "./views/Team";
 import AnswererAnswer from "./views/answerer/Answer";
-import AdministratorLogin from "./views/administrator/Login";
 import AdministratorInputPoints from "./views/administrator/InputPoints";
 import AdministratorSelectPlayer from "./views/administrator/SelectPlayer";
 import AdministratorSelectQuestion from "./views/administrator/SelectQuestion";
 import AdministratorSetQuestionStatus from "./views/administrator/SetQuestionStatus";
 
-import AdministratorQuestions from "./views/administrator/Questions";
 import AdministratorQuestion from "./views/administrator/Question";
 import AdministratorQuestionScreen from "./views/administrator/QuestionScreen";
 import firebase from "firebase";
@@ -32,18 +30,18 @@ let router = new Router({
       component: Login
     },
     {
+      path: "/team",
+      name: "Team",
+      component: Team,
+      meta: { requireAuth: true }
+    },
+    {
       path: "/permission-error",
       name: "PermissionError",
       component: PermissionError
     },
     //-----------------------------------------------------------
     // administrator
-    {
-      path: "/administrator/login",
-      name: "AdministratorLogin",
-      component: AdministratorLogin,
-      meta: { requireAuth: true }
-    },
     {
       path: "/administrator/inputPoints",
       name: "AdministratorInputPoints",
@@ -96,12 +94,6 @@ let router = new Router({
     },
     //-----------------------------------------------------------
     // voter
-    {
-      path: "/voter/team",
-      name: "VoterTeam",
-      component: VoterTeam,
-      meta: { requireAuth: true }
-    },
     {
       path: "/voter/vote",
       name: "VoterVote",
