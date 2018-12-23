@@ -4,7 +4,7 @@
     <div v-if="currentUser">ログイン中のユーザ：{{ currentUser.name }}</div>
     <div v-if="currentQuestion">現在の問題：{{ currentQuestion.sentence }}</div>
     <div v-if="currentAnswerer && currentUser && currentAnswerer.uid == currentUser.uid">あなたが回答者です</div>
-    <b-button size="lg" variant="primary" @click="answer">回答する</b-button>
+    <b-button :disabled="isAnswerable() == false" size="lg" variant="primary" @click="answer">回答する</b-button>
   </div>
 </template>
 
@@ -23,9 +23,17 @@ export default {
       currentQuestion: 'question/currentQuestion',
       currentAnswerer: 'question/currentAnswerer',
       currentQuestionKey: 'question/currentQuestionKey',
+      currentAnswererKey: 'question/currentAnswererKey',
     }),
   },
   methods: {
+    isAnswerable() {
+      if (!this.currentUser) return false
+      if (!this.currentQuestion) return false
+      if (!this.currentQuestion.isReady) return false
+      if (this.currentAnswererKey) return false
+      return true
+    },
     answer() {
       let postData = {
         uid : this.currentUser.uid,
