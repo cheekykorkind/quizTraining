@@ -17,7 +17,7 @@ export default {
       if (currentQuestion == null) return null
       const currentAnswererKey = currentQuestion.currentAnswererKey
       if (currentAnswererKey == null) return null
-      if (!currentAnswererKey.answerer) return null
+      if (!currentQuestion.answerer) return null
       const currentAnswerer = currentQuestion.answerer[currentAnswererKey]
       if (currentAnswerer == null) return null
       return currentAnswerer
