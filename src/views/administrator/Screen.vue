@@ -8,6 +8,7 @@
       </div>
       <div style="width: 30%; float: left;">
         イメージ
+        {{ configs[0]['.value'] }}
       </div>
     </div>
 
@@ -22,6 +23,7 @@
 <script>
 import Administrator from "./mixins/Administrator";
 import firebase from "firebase";
+import { mapState  } from "vuex";
 import { log } from 'util';
 
 export default {
@@ -32,6 +34,11 @@ export default {
     return {
       currentQuestion: ''
     };
+  },
+  computed: {
+    ...mapState({
+      configs: state => state.config.list,
+    })
   },
   created() {
     // お題を取得
