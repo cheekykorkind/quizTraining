@@ -8,14 +8,11 @@
       ">
         <label> お題 : </label> {{ currentQuestion.sentence }}
       </div>
-      <div style="
-        height: 45vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      <div
+        :v-if="currentQuestion.image"
+        style=" height: 45vh; display: flex; justify-content: center; align-items: center;
       ">
         <b-img
-          v-if="currentQuestion.image"
           :src="getCurrentQuestionImageUrl(currentQuestion.image)"
           fluid
           alt="Fluid image"
@@ -32,7 +29,10 @@
         font-weight: bold;
         font-size: 1.4rem;"
       > 回答者 </label>
-      <div style="padding: 0 2rem;">
+      <div
+        v-if="currentAnswerer"
+        style="padding: 0 2rem;
+      ">
         <div style="font-weight: bold; font-size: 3rem;">
           {{ getUser(currentAnswerer.uid).name }}
         </div>
@@ -41,6 +41,7 @@
           :value="calIpponPoint()"
           variant="warning"
           show-progress
+          :animated="isFixed()"
           class="mb-2"
         >
         </b-progress>
@@ -90,6 +91,12 @@ export default {
     },
     calIpponPoint() {
       return this.currentAnswerer.voteNum / this.configs[0]['.value'] * 100;
+    },
+    isFixed() {
+      if (!this.currentAnswerer.answerable) {
+        return false;
+      }
+      return true;
     }
   }
 };
