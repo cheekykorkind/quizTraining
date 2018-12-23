@@ -1,22 +1,22 @@
 <template>
   <div style="padding: 2vh 2vw;">
 
-    <div style="">
-      <div
-        v-if="currentQuestion"
-        style="text-align: left; padding: 0 1.5rem; font-size: 2rem; font-weight: bold;
-      ">
+    <div v-if="currentQuestion.image">
+      <div style="text-align: left; padding: 0 1.5rem; font-size: 2rem; font-weight: bold;">
         <label> お題 : </label> {{ currentQuestion.sentence }}
       </div>
-      <div
-        :v-if="currentQuestion.image"
-        style=" height: 45vh; display: flex; justify-content: center; align-items: center;
-      ">
+      <div style="height: 45vh; display: flex; justify-content: center; align-items: center;">
         <b-img
           :src="getCurrentQuestionImageUrl(currentQuestion.image)"
           fluid
           alt="Fluid image"
         />
+      </div>
+    </div>
+    <div v-else>
+      <div style="text-align: left; padding: 0 1.5rem; font-size: 4rem; font-weight: bold; height: 50vh;">
+        <p style="font-size: 3rem;"> お題 : </p>
+        {{ currentQuestion.sentence }}
       </div>
     </div>
 
