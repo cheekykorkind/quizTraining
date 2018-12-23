@@ -61,6 +61,7 @@ export default {
         }
         return post;
       })
+      this.$router.push({ name: "AdministratorSetQuestionStatus" });
     },
     isSelected(item) {
       return this.questions.some((i) => i.number == item.number)

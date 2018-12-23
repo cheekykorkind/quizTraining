@@ -84,6 +84,7 @@ export default {
       let currentQuestionKey = this.currentQuestionKey;
       firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
         post.isReady = true;
+        post.currentAnswererKey = 'none';
 
         return post;
       });
@@ -116,6 +117,7 @@ export default {
 
         return post;
       });
+      this.$router.push({ name: "AdministratorSelectQuestion" });
     },
   }
 };
