@@ -11,10 +11,10 @@
       現在回答者 : {{ currentAnswerer && getUser(currentAnswerer.uid).name }}
     </div>
     <div>
-      回答受け状況 : {{currentQuestion && currentQuestion.isReady}}
+      回答受付状況 : {{currentQuestion && currentQuestion.isReady}}
     </div>
     <div>
-      投票受け状況 : {{currentAnswerer && currentAnswerer.answerable}}
+      投票受付状況 : {{currentAnswerer && currentAnswerer.answerable}}
     </div>
 
     <!-- questions/{key}/visible --> <!-- true -->
@@ -25,7 +25,7 @@
 
     <!-- questions/{key}/isReady -->
     <b-button variant="success" @click="startAnswer()">
-      回答受け
+      回答受付
     </b-button>
     <br/>
 
@@ -68,6 +68,9 @@ export default {
       getUser: 'user/getUser',
       currentQuestionKey: 'question/currentQuestionKey',
       currentAnswererKey: 'question/currentAnswererKey',
+    }),
+    ...mapState({
+      users: state => state.user.list,
     })
   },
   created() {},
@@ -82,9 +85,14 @@ export default {
     },
     startAnswer() {
       let currentQuestionKey = this.currentQuestionKey;
+      firebase.database().ref('users').once('value').then(function(snapshot) {
+        Object.keys(snapshot.val()).forEach(k => {
+          firebase.database().ref('users/' + k).child('isVotable').set(true)
+        });
+      });
       firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
         post.isReady = true;
-
+        post.currentAnswererKey = 'none';
         return post;
       });
     },
@@ -116,6 +124,7 @@ export default {
 
         return post;
       });
+      this.$router.push({ name: "AdministratorSelectQuestion" });
     },
   }
 };

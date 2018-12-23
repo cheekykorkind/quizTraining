@@ -53,7 +53,7 @@ export default {
         isReady: false,
         visible: false,
       }
-      if (item.image) question.iamge = item.image;
+      if (item.image) question.image = item.image;
       const key = questionsRef.push(question).key;
       questionsRef.transaction((post) => {
         if (post) {
@@ -61,6 +61,7 @@ export default {
         }
         return post;
       })
+      this.$router.push({ name: "AdministratorSetQuestionStatus" });
     },
     isSelected(item) {
       return this.questions.some((i) => i.number == item.number)
