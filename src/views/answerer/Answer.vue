@@ -31,7 +31,8 @@ export default {
       if (!this.currentUser) return false
       if (!this.currentQuestion) return false
       if (!this.currentQuestion.isReady) return false
-      if (this.currentAnswererKey) return false
+      if (!this.currentAnswererKey) return false
+      if (this.currentAnswererKey != 'none') return false
       return true
     },
     answer() {
