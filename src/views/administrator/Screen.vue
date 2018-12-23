@@ -2,8 +2,11 @@
   <div style="padding: 2vh 2vw;">
 
     <div style="">
-      <div style="text-align: left; padding: 0 1.5rem; font-size: 2rem;">
-        <label> お題 : </label> {{ currentQuestion }}
+      <div
+        v-if="currentQuestion"
+        style="text-align: left; padding: 0 1.5rem; font-size: 2rem; font-weight: bold;
+      ">
+        <label> お題 : </label> {{ currentQuestion.sentence }}
       </div>
       <div style="
         height: 45vh;
@@ -12,8 +15,8 @@
         align-items: center;
       ">
         <b-img
-          v-if="url"
-          :src="url"
+          v-if="currentQuestion.image"
+          :src="getCurrentQuestionImageUrl(currentQuestion.image)"
           fluid
           alt="Fluid image"
         />
@@ -29,7 +32,19 @@
         font-weight: bold;
         font-size: 1.4rem;"
       > 回答者 </label>
-      {{ configs[0]['.value'] }}
+      <div style="padding: 0 2rem;">
+        <div style="font-weight: bold; font-size: 3rem;">
+          {{ getUser(currentAnswerer.uid).name }}
+        </div>
+        <b-progress
+          height="4rem"
+          :value="calIpponPoint()"
+          variant="warning"
+          show-progress
+          class="mb-2"
+        >
+        </b-progress>
+      </div>
     </div>
 
   </div>
@@ -39,7 +54,7 @@
 <script>
 import Administrator from "./mixins/Administrator";
 import firebase from "firebase";
-import { mapState  } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { log } from 'util';
 
 export default {
@@ -48,55 +63,33 @@ export default {
   components: {},
   data() {
     return {
-      currentQuestion: '',
-      url: null
+      url: null,
+      ipponPoint: 75
     };
   },
   computed: {
+    ...mapGetters({
+      currentQuestion: 'question/currentQuestion',
+      currentAnswerer: 'question/currentAnswerer',
+      getUser: 'user/getUser',
+    }),
     ...mapState({
       configs: state => state.config.list,
     })
   },
-  created() {
-    // お題を取得
-    this.getCurrentQuestionKey();
-
-  },
+  created() {},
   mounted() {},
   methods: {
     /**
-     * 現在のお題のキーを取得
+     * お題のイメージURLを取得
      */
-    getCurrentQuestionKey() {
-      firebase.database().ref('questions/currentQuestion').once('value')
-        .then( snapshot => {
-          // お題を取得
-          this.getCurrentQuestion(snapshot.val());
-        });
-    },
-    /**
-     * お題を取得
-     */
-    getCurrentQuestion(currentQuestionKey) {
-      firebase.database().ref(`questions/${currentQuestionKey}`).once('value')
-        .then( snapshot => {
-          this.currentQuestion = snapshot.val().sentence;
-
-          // お題のイメージを取得
-          if (snapshot.val().image) {
-            this.getCurrentQuestionImage(snapshot.val().image);
-          }
-        });
-    },
-    /**
-     * お題のイメージを取得
-     */
-    getCurrentQuestionImage(imagePath) {
-      console.log('getImage');
+    getCurrentQuestionImageUrl(imagePath) {
       const ref = firebase.storage().ref().child(imagePath);
-      const url = ref.getDownloadURL().then((url) => {
-        this.url = url
-      });
+      ref.getDownloadURL().then((url) => { this.url = url; });
+      return this.url;
+    },
+    calIpponPoint() {
+      return this.currentAnswerer.voteNum / this.configs[0]['.value'] * 100;
     }
   }
 };
@@ -108,5 +101,13 @@ h2 {
 }
 .img-fluid {
   height: 100%;
+}
+.progress {
+  font-size: 3.5rem;
+  font-weight: bold;
+
+  /deep/ .progress-bar {
+    color: red;
+  }
 }
 </style>
