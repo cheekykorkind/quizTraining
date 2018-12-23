@@ -1,18 +1,66 @@
 <template>
-  <h1>SelectQuestion</h1>
+  <div>
+    <h1>出題</h1>
+    <b-table striped hover :items="questionMasters" :fields="fields">
+      <template slot="buttons" slot-scope="data">
+        <b-button v-if="isSelected(data.item) == false" @click="onClick(data.item)">
+          出題する
+        </b-button>
+      </template>
+    </b-table>
+  </div>
 </template>
 
 <script>
 import Administrator from "./mixins/Administrator";
+import { mapState, mapGetters } from "vuex";
+import firebase from "firebase";
 
 export default {
   name: "SelectQuestion",
   mixins: [Administrator],
+  computed: {
+    ...mapState({
+      questionMasters: state => state.questionMaster.list,
+      questions: state => state.question.list,
+    })
+  },
   components: {},
   data() {
-    return {};
+    return {
+      fields: {
+        number: {
+          label: 'No',
+          sortable: true,
+        },
+        sentence: {
+          label: 'お題',
+          sortable: true,
+        },
+        buttons: {
+          label: ''
+        }
+      },
+    };
   },
   created() {},
-  methods: {}
+  methods: {
+    onClick(item) {
+      const questionsRef = firebase.database().ref('questions')
+      const key = questionsRef.push({
+        number: item.number,
+        sentence: item.sentence
+      }).key;
+      questionsRef.transaction((post) => {
+        if (post) {
+          post.currentQuestion = key;
+        }
+        return post;
+      })
+    },
+    isSelected(item) {
+      return this.questions.some((i) => i.number == item.number)
+    }
+  }
 };
 </script>
