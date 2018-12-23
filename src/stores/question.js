@@ -7,10 +7,19 @@ export default {
   },
   getters: {
     currentQuestion: (state) => {
-      return state.list[state.list.length - 1];
+      const currentKey = state.list.find(i => i['.key'] == 'currentQuestion')
+      return currentKey ? state.list.find(i => i['.key'] == currentKey['.value']) : null
     },
     currentAnswerer: (state) => {
-      return "okazaki"
+      const currentQuestionKey = state.list.find(i => i['.key'] == 'currentQuestion')
+      if (currentQuestionKey == null) return null
+      const currentQuestion = state.list.find(i => i['.key'] == currentQuestionKey['.value'])
+      if (currentQuestion == null) return null
+      const currentAnswererKey = currentQuestion.currentAnswerer
+      if (currentAnswererKey == null) return null
+      const currentAnswerer = currentQuestion.answerer[currentAnswererKey]
+      if (currentAnswerer == null) return null
+      return currentAnswerer
     }
   },
   actions: {
