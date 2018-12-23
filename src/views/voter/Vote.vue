@@ -25,6 +25,7 @@ export default {
   mixins: [Voter],
   computed: {
     ...mapGetters({
+      currentUser: 'user/current',
       currentQuestion: 'question/currentQuestion',
       currentAnswerer: 'question/currentAnswerer',
       currentQuestionKey: 'question/currentQuestionKey',
