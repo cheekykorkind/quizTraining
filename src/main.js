@@ -10,8 +10,8 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.config.productionTip = false;
 
 import firebase from "firebase";
-import { firebaseEnv } from "./env.js";
-firebase.initializeApp(firebaseEnv);
+import { environment } from './environments/environment';
+firebase.initializeApp(environment.firebase);
 firebase.firestore().settings({ timestampsInSnapshots: true });
 
 import store from "./store";
