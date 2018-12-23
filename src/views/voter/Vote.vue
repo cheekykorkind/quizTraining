@@ -7,7 +7,7 @@
       size="lg"
       variant="primary"
       @click="vote"
-      :disabled="isDisabled"
+      :disabled="test()"
     > IPPON!! </b-button>
   </div>
 </template>
@@ -30,9 +30,13 @@ export default {
       currentAnswerer: 'question/currentAnswerer',
       currentQuestionKey: 'question/currentQuestionKey',
       currentAnswererKey: 'question/currentAnswererKey',
+      currentUser: 'user/current',
     }),
   },
   methods: {
+    test() {
+      return this.currentUser.isVotable;
+    },
     vote() {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
