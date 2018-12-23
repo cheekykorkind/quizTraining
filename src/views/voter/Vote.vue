@@ -65,50 +65,6 @@ export default {
 
             return post;
           })
-
-          // 投票したら音を出す
-          // const ctx = new AudioContext()
-          // const oscillator = ctx.createOscillator()
-          // const gainNode = ctx.createGain()
-          // oscillator.type = 'sawtooth' //波系
-          // oscillator.detune.value = 0
-          // gainNode.gain.value = 0.6 //音量
-          // oscillator.connect(gainNode)
-          // gainNode.connect(ctx.destination)
-          // oscillator.frequency.value = 780 //周波数
-          // oscillator.start()
-
-          // window.onload = function () {
-          //   request = new XMLHttpRequest();
-          //   request.open("GET", "src/sound/ha.mp3", true);
-          //   request.responseType = "arraybuffer";
-          //   request.onload = completeOnLoad;
-          //   request.send();
-          // };
-
-          // function completeOnLoad() {
-          //   window.AudioContext = window.AudioContext || window.webkitAudioContext;
-          //   context = new AudioContext();
-          //   context.createBufferSource().start(0);
-
-          //   // オーディオをデコード
-          //   context.decodeAudioData(request.response, function (buf) {
-          //     source.buffer = buf;
-          //     source.loop = false;
-
-          //   });
-
-          //   source = context.createBufferSource();
-
-          //   var elem = document.getElementById("Play");
-          //   elem.addEventListener("click", playStart, false);
-          // }
-
-          // function playStart() {
-          //   source.connect(context.destination);
-          //   source.start(0);
-          // }
-
         }
       })
     }
