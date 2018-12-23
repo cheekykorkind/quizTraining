@@ -1,9 +1,13 @@
 <template>
   <div>
     <h1>SetQuestionStatus</h1>
-    {{ currentQuestion ? currentQuestion.currentAnswerer : 'null' }}
+    {{ currentQuestion }}
     <br/>
     {{ currentAnswerer }}
+    <br/>
+    {{ currentQuestionKey }}
+    <br/>
+    {{ currentAnswererKey }}
   </div>
 </template>
 
@@ -22,6 +26,8 @@ export default {
     ...mapGetters({
       currentQuestion: 'question/currentQuestion',
       currentAnswerer: 'question/currentAnswerer',
+      currentQuestionKey: 'question/currentQuestionKey',
+      currentAnswererKey: 'question/currentAnswererKey',
     }),
     ...mapState({
       questions: state => state.question.list,
