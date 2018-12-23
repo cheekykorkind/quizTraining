@@ -1,6 +1,21 @@
 <template>
   <div>
     <h1>お題進行</h1>
+    <div>
+      お題状態 : {{currentQuestion.visible}}
+    </div>
+    <div>
+      お題内容 : {{currentQuestion.sentence}}
+    </div>
+    <div>
+      現在回答者 : {{ getUser(currentAnswerer.uid).name }}
+    </div>
+    <div>
+      回答受け状況 : {{currentQuestion.isReady}}
+    </div>
+    <div>
+      投票受け状況 : {{currentAnswerer.answerble}}
+    </div>
 
     <!-- questions/{key}/visible --> <!-- true -->
     <b-button variant="primary" @click="startQuiz()">
@@ -16,7 +31,13 @@
 
     <!-- questions/{key}/answerer/{key}/answerble -->
     <b-button variant="success" @click="startVote()">
-      投票受け
+      投票始め
+    </b-button>
+    <br/>
+
+    <!-- questions/{key}/answerer/{key}/answerble -->
+    <b-button variant="success" @click="endVote()">
+      投票終了
     </b-button>
     <br/>
 
@@ -30,6 +51,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import firebase from "firebase";
 import Administrator from "./mixins/Administrator";
 
 export default {
@@ -43,26 +65,57 @@ export default {
     ...mapGetters({
       currentQuestion: 'question/currentQuestion',
       currentAnswerer: 'question/currentAnswerer',
+      getUser: 'user/getUser',
       currentQuestionKey: 'question/currentQuestionKey',
       currentAnswererKey: 'question/currentAnswererKey',
-    }),
-    ...mapState({
-      questions: state => state.question.list,
     })
   },
   created() {},
   methods: {
-    startQuiz: () => {
-      alert('startQuiz');
+    startQuiz() {
+      let currentQuestionKey = this.currentQuestionKey;
+      firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
+        post.visible = true;
+
+        return post;
+      });
     },
-    startAnswer: () => {
-      alert('startAnswer');
+    startAnswer() {
+      let currentQuestionKey = this.currentQuestionKey;
+      firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
+        post.isReady = true;
+
+        return post;
+      });
     },
-    startVote: () => {
-      alert('startVote');
+    startVote() {
+      let currentQuestionKey = this.currentQuestionKey;
+      let currentAnswererKey = this.currentAnswererKey;
+
+      firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
+        post.isReady = false;
+        post.answerer[currentAnswererKey].answerble = true;
+
+        return post;
+      });
     },
-    endQuiz: () => {
-      alert('endQuiz');
+    endVote() {
+      let currentQuestionKey = this.currentQuestionKey;
+      let currentAnswererKey = this.currentAnswererKey;
+
+      firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
+        post.answerer[currentAnswererKey].answerble = false;
+
+        return post;
+      });
+    },
+    endQuiz() {
+      let currentQuestionKey = this.currentQuestionKey;
+      firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
+        post.visible = false;
+
+        return post;
+      });
     },
   }
 };
