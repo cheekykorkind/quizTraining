@@ -9,7 +9,11 @@
       v-if="currentUser"
       target="nav_collapse"
     />
-    <b-collapse is-nav id="nav_collapse">
+    <b-collapse
+      v-if="currentUser"
+      is-nav
+      id="nav_collapse"
+    >
       <b-navbar-nav>
         <b-nav-item
           v-if="currentUser.answerer"
@@ -20,9 +24,6 @@
           to="/voter/vote"
         > 投票 </b-nav-item>
         <b-nav-item to="/team"> チーム </b-nav-item>
-        <b-nav-item
-          @click="doLogout()"
-        > ログアウト </b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -34,7 +35,12 @@
         >
           <b-dropdown-item to="/administrator/selectQuestion"> 出題 </b-dropdown-item>
           <b-dropdown-item to="/administrator/setQuestionStatus"> お題進行 </b-dropdown-item>
+          <b-dropdown-item to="/administrator/screen"> スクリーン </b-dropdown-item>
         </b-nav-item-dropdown>
+
+        <b-nav-item
+          @click="doLogout()"
+        > ログアウト </b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

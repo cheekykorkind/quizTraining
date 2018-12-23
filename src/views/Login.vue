@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 50vw 10vw;">
+  <div style="padding: 25vh 10vw;">
     <div style="margin-bottom: 2rem;">
       <div>
         <label for="inputFormatter"> メールアドレス </label>
