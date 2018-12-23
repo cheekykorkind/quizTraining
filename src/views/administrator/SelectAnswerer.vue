@@ -1,5 +1,14 @@
 <template>
   <div>
+    <h1>ユーザー選択</h1>
+    <b-button @click="resetAnswerer()">解答者をリセット</b-button>
+    <b-table striped hover :items="users" :fields="fields">
+      <template slot="buttons" slot-scope="data">
+        <b-button @click="onClick()">
+          解答者として登録
+        </b-button>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -13,15 +22,26 @@ export default {
   mixins: [Administrator],
   computed: {
     ...mapState({
-      questionMasters: state => state.questionMaster.list,
-      questions: state => state.question.list,
+      users : state => state.user.list,
     })
+  },
+  data() {
+    return {
+      fields: {
+        buttons: {
+          label: ''
+        }
+      }
+    }
   },
   components: {},
   methods: {
-    test() {
+    resetAnswerer() {
+      console.log('reset');
+    },
+    onClick() {
         console.log('test');
-    }
+    },
   }
 };
 </script>
