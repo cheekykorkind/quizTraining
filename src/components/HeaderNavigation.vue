@@ -16,11 +16,11 @@
     >
       <b-navbar-nav>
         <b-nav-item
-          v-if="currentUser.answerer"
+          v-if="currentUser && currentUser.answerer"
           to="/answerer/answer"
         > 回答 </b-nav-item>
         <b-nav-item
-          v-if="currentUser.voter"
+          v-if="currentUser && currentUser.voter"
           to="/voter/vote"
         > 投票 </b-nav-item>
         <b-nav-item to="/team"> チーム </b-nav-item>
@@ -29,7 +29,7 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown
-          v-if="currentUser.administrator"
+          v-if="currentUser && currentUser.administrator"
           text="管理"
           right
         >
@@ -47,15 +47,15 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 import firebase from "firebase";
 
 export default {
   name: "HeaderNavigation",
-  computed: mapState({
-    currentUser: state => state.user.current,
+  computed: mapGetters({
+    currentUser: 'user/current',
   }),
-    methods: {
+  methods: {
     // ログアウト処理
     doLogout() {
       firebase.auth().signOut();

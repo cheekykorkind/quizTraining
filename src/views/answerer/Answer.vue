@@ -3,8 +3,8 @@
     <h1>Answer</h1>
     <div v-if="currentUser">ログイン中のユーザ：{{ currentUser.name }}</div>
     <div v-if="currentQuestion">現在の問題：{{ currentQuestion.sentence }}</div>
-    <div v-if="currentUser.answerer">あなたが回答者です</div>
-    <b-button size="lg" variant="primary" @click="answer">回答する</b-button>
+    <div v-if="currentAnswerer && currentUser && currentAnswerer.uid == currentUser.uid">あなたが回答者です</div>
+    <b-button :disabled="isAnswerable() == false" size="lg" variant="primary" @click="answer">回答する</b-button>
   </div>
 </template>
 
@@ -18,40 +18,36 @@ export default {
   mixins: [Answerer],
   computed: {
     ...mapGetters({
+      getUser: 'user/getUser',
+      currentUser: 'user/current',
       currentQuestion: 'question/currentQuestion',
-      currentAnswererKey: 'question/currentAnswererKey'
+      currentAnswerer: 'question/currentAnswerer',
+      currentQuestionKey: 'question/currentQuestionKey',
+      currentAnswererKey: 'question/currentAnswererKey',
     }),
-    ...mapState({
-      currentUser: state => state.user.current,
-      questions: state => state.question.list,
-      currentQuestion: state => state.question.current
-    })
   },
-
   methods: {
-    answer: () => {
-      firebase.auth().onAuthStateChanged(u => {
-        let _uid = u.uid;
-        let postData = {
-          uid : _uid,
-          voteNum : 0,
-        };
-        if (u) {
-          firebase.database().ref('questions/3').child('answerer')
-            .push(postData)
-            .then(reference => {
-              let pushKey = reference.path.pieces_.pop();
-              firebase.database().ref('questions/3').transaction(function (post) {
-                if (post.isReady) {
-                  post.currentAnswererKey = pushKey;
-                  post.isReady = false;
-                }
-
-                return post;
-              })
-            });
-        }
-      });
+    isAnswerable() {
+      if (!this.currentUser) return false
+      if (!this.currentQuestion) return false
+      if (!this.currentQuestion.isReady) return false
+      if (this.currentAnswererKey) return false
+      return true
+    },
+    answer() {
+      let postData = {
+        uid : this.currentUser.uid,
+        voteNum : 0,
+      };
+      firebase.database().ref('questions/' + this.currentQuestionKey).child('answerer')
+        .push(postData)
+        .then(reference => {
+          let pushKey = reference.path.pieces_.pop();
+          firebase.database().ref('questions/' + this.currentQuestionKey).transaction(function (post) {
+            post.currentAnswererKey = pushKey;
+            return post;
+          })
+        });
     },
 
     // // 開発用。参考

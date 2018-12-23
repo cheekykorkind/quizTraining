@@ -1,19 +1,51 @@
 <template>
   <div style="padding: 2vh 2vw;">
 
-    <div style="border: solid 1px; height: 45vh;">
-      <H2> お題 </H2>
-      <div style="width: 70%; float: left; text-align: left; padding: 0 1.5rem;">
-        {{ currentQuestion }}
+    <div v-if="currentQuestion.image">
+      <div style="text-align: left; padding: 0 1.5rem; font-size: 2rem; font-weight: bold;">
+        <label> お題 : </label> {{ currentQuestion.sentence }}
       </div>
-      <div style="width: 30%; float: left;">
-        イメージ
-        {{ configs[0]['.value'] }}
+      <div style="height: 45vh; display: flex; justify-content: center; align-items: center;">
+        <b-img
+          :src="getCurrentQuestionImageUrl(currentQuestion.image)"
+          fluid
+          alt="Fluid image"
+        />
+      </div>
+    </div>
+    <div v-else>
+      <div style="text-align: left; padding: 0 1.5rem; font-size: 4rem; font-weight: bold; height: 50vh;">
+        <p style="font-size: 3rem;"> お題 : </p>
+        {{ currentQuestion.sentence }}
       </div>
     </div>
 
-    <div style="border: solid 1px; height: 45vh;">
-      <H2> 回答者 </H2>
+    <div style="height: 30vh; padding-top: 1rem;">
+      <label style="
+        background-color: lightseagreen;
+        color: rgb(255, 255, 255);
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 1.4rem;"
+      > 回答者 </label>
+      <div
+        v-if="currentAnswerer"
+        style="padding: 0 2rem;
+      ">
+        <div style="font-weight: bold; font-size: 3rem;">
+          {{ getUser(currentAnswerer.uid).name }}
+        </div>
+        <b-progress
+          height="4rem"
+          :value="calIpponPoint()"
+          variant="warning"
+          show-progress
+          :animated="isFixed()"
+          class="mb-2"
+        >
+        </b-progress>
+      </div>
     </div>
 
   </div>
@@ -23,7 +55,7 @@
 <script>
 import Administrator from "./mixins/Administrator";
 import firebase from "firebase";
-import { mapState  } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { log } from 'util';
 
 export default {
@@ -32,31 +64,39 @@ export default {
   components: {},
   data() {
     return {
-      currentQuestion: ''
+      url: null,
+      ipponPoint: 75
     };
   },
   computed: {
+    ...mapGetters({
+      currentQuestion: 'question/currentQuestion',
+      currentAnswerer: 'question/currentAnswerer',
+      getUser: 'user/getUser',
+    }),
     ...mapState({
       configs: state => state.config.list,
     })
   },
-  created() {
-    // お題を取得
-    this.getCurrentQuestionKey();
-  },
+  created() {},
   mounted() {},
   methods: {
-    getCurrentQuestionKey() {
-      firebase.database().ref('questions/currentQuestion').once('value')
-        .then( snapshot => {
-          this.getCurrentQuestion(snapshot.val());
-        });
+    /**
+     * お題のイメージURLを取得
+     */
+    getCurrentQuestionImageUrl(imagePath) {
+      const ref = firebase.storage().ref().child(imagePath);
+      ref.getDownloadURL().then((url) => { this.url = url; });
+      return this.url;
     },
-    getCurrentQuestion(currentQuestionKey) {
-      firebase.database().ref(`questions/${currentQuestionKey}/sentence`).once('value')
-        .then( snapshot => {
-          this.currentQuestion = snapshot.val();
-        });
+    calIpponPoint() {
+      return this.currentAnswerer.voteNum / this.configs[0]['.value'] * 100;
+    },
+    isFixed() {
+      if (!this.currentAnswerer.answerable) {
+        return false;
+      }
+      return true;
     }
   }
 };
@@ -65,5 +105,16 @@ export default {
 <style lang="scss" scoped>
 h2 {
   text-align: left;
+}
+.img-fluid {
+  height: 100%;
+}
+.progress {
+  font-size: 3.5rem;
+  font-weight: bold;
+
+  /deep/ .progress-bar {
+    color: red;
+  }
 }
 </style>
