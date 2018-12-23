@@ -9,6 +9,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import firebase from "firebase";
 import Voter from "./mixins/Voter";
 
 export default {
@@ -25,7 +26,19 @@ export default {
   },
   methods: {
     vote: () => {
-      console.log("投票する")
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          let uid = user.uid;
+          let data = {
+            uid: uid
+          }
+          firebase.database().ref("questions/3/answerer/{key}/voters")
+            .push(data)
+            .then(result => {
+              console.log('投票したよ');
+            })
+        }
+      })
     }
   }
 };
