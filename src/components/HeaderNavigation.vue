@@ -2,7 +2,7 @@
   <b-navbar
     toggleable="md"
     type="dark"
-    variant="info"
+    style="background-color: #e22551;"
   >
     <b-navbar-brand href="#"> Fusic忘年会2018! </b-navbar-brand>
     <b-navbar-toggle
@@ -63,3 +63,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.navbar-brand {
+  font-weight: bold;
+}
+</style>
