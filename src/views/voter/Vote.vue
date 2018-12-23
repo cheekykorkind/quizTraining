@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Vote</h1>
-    <div v-if="currentUser">ログイン中のユーザ：{{ currentUser.name }}</div>
     <div v-if="currentQuestion">現在の問題：{{ currentQuestion.sentence }}</div>
     <b-button
       size="lg"
@@ -19,8 +18,10 @@ import Voter from "./mixins/Voter";
 
 export default {
   name: "Vote",
-  data: {
-    isDisabled: false,
+  data: function () {
+    return {
+      isDisabled: false,
+    }
   },
   mixins: [Voter],
   computed: {
@@ -47,7 +48,7 @@ export default {
 
             return post;
           })
-            
+
           // 投票したら、投票可能フラグをfalseにする
           firebase.database().ref("users/"+uid).transaction(function(post) {
             if (post.isVotable) {
