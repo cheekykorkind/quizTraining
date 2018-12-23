@@ -30,3 +30,6 @@ public/*
 .firebase
 .firebaserc
 firebase.json
+
+# mp3 file
+src/sound/ha.mp3
