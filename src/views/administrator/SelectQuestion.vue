@@ -56,7 +56,7 @@ export default {
       }).key;
       questionsRef.transaction((post) => {
         if (post) {
-          post.currentQuestion = key;
+          post.currentQuestionKey = key;
         }
         return post;
       })
