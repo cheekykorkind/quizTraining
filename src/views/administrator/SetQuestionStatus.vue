@@ -46,6 +46,15 @@
       お題終了
     </b-button>
     <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <!-- questions/{key}/visible --> <!-- false, 遷移(出題画面) -->
+    <b-button variant="danger" @click="calPoints()">
+      点数
+    </b-button>
+    <br/>
   </div>
 </template>
 
@@ -71,6 +80,7 @@ export default {
     }),
     ...mapState({
       users: state => state.user.list,
+      questions: state => state.question.list,
     })
   },
   created() {},
@@ -125,6 +135,28 @@ export default {
         return post;
       });
       this.$router.push({ name: "AdministratorSelectQuestion" });
+    },
+    calPoints() {
+      // firebase.database().ref('users').once('value').then(function(snapshot) {
+      //   let uids = Object.keys(snapshot.val())
+      //   console.log(uids);
+      // });
+
+      firebase.database().ref('questions').once('value').then(function(snapshot) {
+        let questionKeys = Object.keys(snapshot.val())
+        let questionObj = snapshot.val();
+        // console.log(snapshot.val());
+        questionKeys.forEach(k => {
+          if (k == 'currentQuestionKey') return;
+
+          let answerer = questionObj[k].answerer;
+          let properties = Object.keys(answerer)
+
+          properties.forEach(property => {
+            console.log(answerer[property]);
+          });
+        });
+      });
     },
   }
 };
