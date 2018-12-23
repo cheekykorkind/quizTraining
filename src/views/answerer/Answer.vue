@@ -35,10 +35,6 @@ export default {
       return true
     },
     answer() {
-      console.log(!this.currentUser)
-      console.log(!this.currentQuestion.isReady)
-      console.log(this.currentAnswererKey)
-      console.log(this.isAnswerable())
       let postData = {
         uid : this.currentUser.uid,
         voteNum : 0,
