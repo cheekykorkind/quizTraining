@@ -1,40 +1,43 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-primary">
-    <div class="collapse navbar-collapse">
-      <ul v-if="currentUser" class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/team" class="text-light">Quiz Traning</router-link>
-        </li>
+  <b-navbar
+    toggleable="md"
+    type="dark"
+    variant="info"
+  >
+    <b-navbar-brand href="#"> Fusic忘年会2018! </b-navbar-brand>
+    <b-navbar-toggle
+      v-if="currentUser"
+      target="nav_collapse"
+    />
+    <b-collapse is-nav id="nav_collapse">
+      <b-navbar-nav>
+        <b-nav-item
+          v-if="currentUser.answerer"
+          to="/answerer/answer"
+        > 回答 </b-nav-item>
+        <b-nav-item
+          v-if="currentUser.voter"
+          to="/voter/vote"
+        > 投票 </b-nav-item>
+        <b-nav-item to="/team"> チーム </b-nav-item>
+        <b-nav-item
+          @click="doLogout()"
+        > ログアウト </b-nav-item>
+      </b-navbar-nav>
 
-        <li v-if="currentUser.administrator" class="nav-item ml-4">
-          <router-link to="/administrator/inputPoints" class="text-light">inputPoints</router-link>
-        </li>
-        <li v-if="currentUser.administrator" class="nav-item ml-4">
-          <router-link to="/administrator/selectPlayer" class="text-light">selectPlayer</router-link>
-        </li>
-        <li v-if="currentUser.administrator" class="nav-item ml-4">
-          <router-link to="/administrator/selectQuestion" class="text-light">selectQuestion</router-link>
-        </li>
-        <li v-if="currentUser.administrator" class="nav-item ml-4">
-          <router-link to="/administrator/setQuestionStatus" class="text-light">setQuestionStatus</router-link>
-        </li>
-
-        <li v-if="currentUser" class="nav-item ml-4">
-          <router-link to="/team" class="text-light">Team</router-link>
-        </li>
-        <li v-if="currentUser.voter == true" class="nav-item ml-4">
-          <router-link to="/voter/vote" class="text-light">Vote</router-link>
-        </li>
-        <li v-if="currentUser.answerer" class="nav-item ml-4">
-          <router-link to="/answerer/answer" class="text-light">answer</router-link>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li v-if="currentUser" class="nav-item text-light"> {{ currentUser.name }} </li>
-        <li class="nav-item ml-4 text-light" @click="doLogout()">Logout</li>
-      </ul>
-    </div>
-  </nav>
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item-dropdown
+          v-if="currentUser.administrator"
+          text="管理"
+          right
+        >
+          <b-dropdown-item to="/administrator/selectQuestion"> 出題 </b-dropdown-item>
+          <b-dropdown-item to="/administrator/setQuestionStatus"> お題進行 </b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
 </template>
 
 <script>

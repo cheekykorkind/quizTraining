@@ -1,22 +1,33 @@
 <template>
-  <div class="container clearfix h-100">
-    <div class="row mt-3 h-100 justify-content-center align-items-center">
-      <div class="col p-0">
-        <div class="row mt-3 justify-content-center align-items-center">
-          <div class="col p-0">ID</div>
-          <input type="text" class="form-control" v-model="username" />
-        </div>
-        <div class="row mt-3 justify-content-center align-items-center">
-          <div class="col p-0">password</div>
-          <input type="text" class="form-control" v-model="password" />
-        </div>
-        <div class="row mt-3 justify-content-center align-items-center">
-          <button type="button" class="btn btn-primary" @click="doLogin()">
-            login
-          </button>
-        </div>
+  <div style="padding: 50vw 10vw;">
+    <div style="margin-bottom: 2rem;">
+      <div>
+        <label for="inputFormatter"> メールアドレス </label>
+        <b-form-input
+          v-model="username"
+          type="text"
+          placeholder="会社のメールアドレスを入力してください"
+          size="lg"
+        />
+      </div>
+      <div style="margin-top: 2rem;">
+        <label for="inputFormatter"> パスワード </label>
+        <b-form-input
+          v-model="password"
+          type="password"
+          placeholder="パスワードを入力してください"
+          size="lg"
+        />
       </div>
     </div>
+
+    <b-button
+      size="lg"
+      variant="primary"
+      @click="doLogin()"
+    >
+      ログイン
+    </b-button>
   </div>
 </template>
 
@@ -46,3 +57,14 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+label {
+  width: 100%;
+  text-align: left;
+}
+
+.form-control-lg {
+  font-size: 0.9rem;
+}
+</style>
