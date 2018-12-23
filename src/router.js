@@ -10,6 +10,7 @@ import AdministratorSelectPlayer from "./views/administrator/SelectPlayer";
 import AdministratorSelectQuestion from "./views/administrator/SelectQuestion";
 import AdministratorSetQuestionStatus from "./views/administrator/SetQuestionStatus";
 import AdministratorScreen from "./views/administrator/Screen";
+import AdministratorSelectAnswerer from "./views/administrator/SelectAnswerer";
 
 import AdministratorQuestion from "./views/administrator/Question";
 import AdministratorQuestionScreen from "./views/administrator/QuestionScreen";
@@ -71,6 +72,12 @@ let router = new Router({
       path: "/administrator/screen",
       name: "AdministratorScreen",
       component: AdministratorScreen,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/administrator/selectAnswerer",
+      name: "AdministratorSelectAnswerer",
+      component: AdministratorSelectAnswerer,
       meta: { requireAuth: true }
     },
     // {
