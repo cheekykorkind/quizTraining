@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>ユーザー選択</h1>
+    <h1>解答者選択</h1>
     <b-button @click="resetAnswerer()">解答者をリセット</b-button>
     <b-table striped hover :items="users" :fields="fields">
       <template slot="buttons" slot-scope="data">
