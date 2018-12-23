@@ -35,9 +35,17 @@ export default {
     vote: () => {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
+          let uid = user.uid
+
+          // 投票したら、投票可能フラグをfalseにする
+          firebase.database().ref("users/"+uid).transaction(function(post) {
+            if (post.canVote) {
+              post.canVote = false;
+            }
+            return post;
+          })
 
           let ref = firebase.database().ref("questions/3/answerer");
-          console.log(ref);
 
           // let uid = user.uid;
           // let data = {
@@ -54,6 +62,11 @@ export default {
           //   .then(result => {
           //     console.log('投票したよ');
           //   })
+
+          // console.log(uid);
+          // let canVote = firebase.database().ref("users/"+uid+"/canVote").once('value').then(function(snapshot) {
+          //   console.log(snapshot.val());
+          // })
         }
       })
     }
