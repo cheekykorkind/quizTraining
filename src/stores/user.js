@@ -6,6 +6,11 @@ export default {
     list: [],
     current: null
   },
+  getters: {
+    getUser: (state) => (uid) => {
+      return state.list.find(i => i['.key'] == uid)
+    },
+  },
   actions: {
     setListRef: firebaseAction(({ bindFirebaseRef }, ref) => {
       bindFirebaseRef("list", ref);

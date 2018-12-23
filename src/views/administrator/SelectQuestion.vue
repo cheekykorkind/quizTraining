@@ -49,11 +49,14 @@ export default {
       const questionsRef = firebase.database().ref('questions')
       const key = questionsRef.push({
         number: item.number,
-        sentence: item.sentence
+        sentence: item.sentence,
+        image: item.image,
+        isReady: false,
+        visible: false,
       }).key;
       questionsRef.transaction((post) => {
         if (post) {
-          post.currentQuestion = key;
+          post.currentQuestionKey = key;
         }
         return post;
       })
