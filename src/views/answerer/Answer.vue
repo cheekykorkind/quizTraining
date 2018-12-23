@@ -3,13 +3,14 @@
     <h1>Answer</h1>
     <div v-if="currentUser">ログイン中のユーザ：{{ currentUser.name }}</div>
     <div v-if="currentQuestion">現在の問題：{{ currentQuestion.sentence }}</div>
-    <div v-if="currentUser && currentAnswerer == currentUser.name">あなたが回答者です</div>
+    <div v-if="currentUser.answerer">あなたが回答者です</div>
     <b-button size="lg" variant="primary" @click="answer">回答する</b-button>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
+import firebase from "firebase";
 import Answerer from "./mixins/Answerer";
 
 export default {
@@ -26,10 +27,86 @@ export default {
       currentQuestion: state => state.question.current
     })
   },
+
   methods: {
     answer: () => {
-      console.log("回答する")
-    }
+      firebase.auth().onAuthStateChanged(u => {
+        let _uid = u.uid;
+        let postData = {
+          uid : _uid,
+          voteNum : 0,
+        };
+        if (u) {
+          firebase.database().ref('questions/3').child('answerer')
+            .push(postData)
+            .then(reference => {
+              let pushKey = reference.path.pieces_.pop();
+              firebase.database().ref('questions/3').transaction(function (post) {
+                if (post.isReady) {
+                  post.currentAnswerer = pushKey;
+                  post.isReady = false;
+                }
+
+                return post;
+              })
+            });
+        }
+      });
+    },
+
+    // // 開発用。参考
+    // answerOld: () => {
+    //   firebase.auth().onAuthStateChanged(u => {
+    //     let uid = u.uid;
+
+    //     if (u) {
+    //       firebase.database().ref('questions/3/answerer').orderByChild("uid").equalTo(uid).once('value').then(function(snapshot) {
+    //         let pushKey = Object.keys(snapshot.val()).pop();
+    //         // console.log(pushKey);
+
+    //         return pushKey;
+    //       }).then(function(pushKey){
+    //         firebase.database().ref('questions/3').transaction(function (post) {
+    //           if (post.isReady) {
+    //             post.whoIsFirstAnswerer = pushKey;
+    //             post.isReady = false;
+    //           }
+
+    //           return post;
+    //         })
+    //       })
+    //     }
+
+    //   });
+    // },
+
+    // // 開発用。参考
+    // appendUser: () => {
+    //   firebase.auth().onAuthStateChanged(u => {
+    //     let _uid = u.uid;
+    //     let postData = {
+    //       uid : 'kawano'
+    //     };
+
+    //     if (u) {
+    //       firebase.database().ref('questions/3').child('answerer')
+    //         .push(postData)
+    //         .then(result => {
+    //           console.log("appendUser");
+    //         });
+    //     }
+    //   });
+    // },
+
+    // // 開発用。参考
+    // getUID: () => {
+    //   firebase.database().ref('questions/3/answerer').orderByChild("uid").equalTo('kawano').once('value').then(function(snapshot) {
+    //     let tempResult = Object.keys(snapshot.val()).pop();
+    //     return tempResult;
+    //   }).then(function(result){
+    //     console.log(result);
+    //   });
+    // }
   }
 };
 </script>
