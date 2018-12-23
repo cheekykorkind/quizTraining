@@ -38,6 +38,7 @@ export default {
       let postData = {
         uid : this.currentUser.uid,
         voteNum : 0,
+        isIppon: false,
       };
       firebase.database().ref('questions/' + this.currentQuestionKey).child('answerer')
         .push(postData)
