@@ -6,7 +6,7 @@
       size="lg"
       variant="primary"
       @click="vote"
-      :disabled="test()"
+      :disabled="isDistable()"
     > IPPON!! </b-button>
   </div>
 </template>
@@ -27,7 +27,6 @@ export default {
   mixins: [Voter],
   computed: {
     ...mapGetters({
-      currentUser: 'user/current',
       currentQuestion: 'question/currentQuestion',
       currentAnswerer: 'question/currentAnswerer',
       currentQuestionKey: 'question/currentQuestionKey',
@@ -36,8 +35,11 @@ export default {
     }),
   },
   methods: {
-    test() {
-      return this.currentUser.isVotable;
+    isDistable() {
+      if (this.currentAnswererKey == 'none') {
+        return true;
+      }
+      return !this.currentUser.isVotable;
     },
     vote() {
       firebase.auth().onAuthStateChanged(user => {
