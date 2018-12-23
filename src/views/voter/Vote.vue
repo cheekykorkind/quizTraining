@@ -7,6 +7,7 @@
       size="lg"
       variant="primary"
       @click="vote"
+      :disabled="isDisabled"
     > 投票する </b-button>
   </div>
 </template>
@@ -18,6 +19,9 @@ import Voter from "./mixins/Voter";
 
 export default {
   name: "Vote",
+  data: {
+    isDisabled: false,
+  },
   mixins: [Voter],
   computed: {
     ...mapGetters({
@@ -33,22 +37,25 @@ export default {
         if (user) {
           let uid = user.uid
 
+          // 投票ボタンをdisabled
+          this.isDisabled = true;
+
           // 投票でvoteNumをインクリメントする処理
           let voteTarget = firebase.database().ref("questions/" + this.currentQuestionKey + "/answerer/" + this.currentAnswererKey);
           voteTarget.transaction(function (post) {
             post.voteNum += 1;
+
             return post;
           })
             
           // 投票したら、投票可能フラグをfalseにする
           firebase.database().ref("users/"+uid).transaction(function(post) {
-            if (post.canVote) {
-              post.canVote = false;
+            if (post.isVotable) {
+              post.isVotable = false;
             }
+
             return post;
           })
-
-          
         }
       })
     }
