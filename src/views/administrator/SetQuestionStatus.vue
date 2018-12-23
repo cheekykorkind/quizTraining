@@ -2,19 +2,19 @@
   <div>
     <h1>お題進行</h1>
     <div>
-      お題状態 : {{currentQuestion.visible}}
+      お題状態 : {{currentQuestion && currentQuestion.visible}}
     </div>
     <div>
-      お題内容 : {{currentQuestion.sentence}}
+      お題内容 : {{currentQuestion && currentQuestion.sentence}}
     </div>
     <div>
-      現在回答者 : {{ getUser(currentAnswerer.uid).name }}
+      現在回答者 : {{ currentAnswerer && getUser(currentAnswerer.uid).name }}
     </div>
     <div>
-      回答受け状況 : {{currentQuestion.isReady}}
+      回答受け状況 : {{currentQuestion && currentQuestion.isReady}}
     </div>
     <div>
-      投票受け状況 : {{currentAnswerer.answerable}}
+      投票受け状況 : {{currentAnswerer && currentAnswerer.answerable}}
     </div>
 
     <!-- questions/{key}/visible --> <!-- true -->
