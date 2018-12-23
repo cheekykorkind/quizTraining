@@ -14,7 +14,7 @@
       回答受け状況 : {{currentQuestion.isReady}}
     </div>
     <div>
-      投票受け状況 : {{currentAnswerer.answerble}}
+      投票受け状況 : {{currentAnswerer.answerable}}
     </div>
 
     <!-- questions/{key}/visible --> <!-- true -->
@@ -29,13 +29,13 @@
     </b-button>
     <br/>
 
-    <!-- questions/{key}/answerer/{key}/answerble -->
+    <!-- questions/{key}/answerer/{key}/answerable -->
     <b-button variant="success" @click="startVote()">
       投票始め
     </b-button>
     <br/>
 
-    <!-- questions/{key}/answerer/{key}/answerble -->
+    <!-- questions/{key}/answerer/{key}/answerable -->
     <b-button variant="success" @click="endVote()">
       投票終了
     </b-button>
@@ -94,7 +94,7 @@ export default {
 
       firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
         post.isReady = false;
-        post.answerer[currentAnswererKey].answerble = true;
+        post.answerer[currentAnswererKey].answerable = true;
 
         return post;
       });
@@ -104,7 +104,7 @@ export default {
       let currentAnswererKey = this.currentAnswererKey;
 
       firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
-        post.answerer[currentAnswererKey].answerble = false;
+        post.answerer[currentAnswererKey].answerable = false;
 
         return post;
       });
