@@ -8,7 +8,7 @@
       variant="primary"
       @click="vote"
       :disabled="isDisabled"
-    > 投票する </b-button>
+    > IPPON!! </b-button>
   </div>
 </template>
 
