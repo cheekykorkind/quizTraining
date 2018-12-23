@@ -47,13 +47,14 @@ export default {
   methods: {
     onClick(item) {
       const questionsRef = firebase.database().ref('questions')
-      const key = questionsRef.push({
+      let question = {
         number: item.number,
         sentence: item.sentence,
-        image: item.image,
         isReady: false,
         visible: false,
-      }).key;
+      }
+      if (item.image) question.iamge = item.image;
+      const key = questionsRef.push(question).key;
       questionsRef.transaction((post) => {
         if (post) {
           post.currentQuestionKey = key;

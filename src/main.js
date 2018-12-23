@@ -10,7 +10,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.config.productionTip = false;
 
 import firebase from "firebase";
-import { environment } from './environments/environment';
+import { environment } from './environments/environment.js';
 firebase.initializeApp(environment.firebase);
 firebase.firestore().settings({ timestampsInSnapshots: true });
 
