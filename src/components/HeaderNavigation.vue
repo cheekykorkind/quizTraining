@@ -38,6 +38,7 @@
         >
           <b-dropdown-item to="/administrator/selectQuestion"> 出題 </b-dropdown-item>
           <b-dropdown-item to="/administrator/setQuestionStatus"> お題進行 </b-dropdown-item>
+          <b-dropdown-item to="/administrator/screen"> スクリーン </b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
