@@ -19,7 +19,7 @@ export default {
   computed: {
     ...mapGetters({
       currentQuestion: 'question/currentQuestion',
-      currentAnswerer: 'question/currentAnswerer'
+      currentAnswererKey: 'question/currentAnswererKey'
     }),
     ...mapState({
       currentUser: state => state.user.current,
@@ -43,7 +43,7 @@ export default {
               let pushKey = reference.path.pieces_.pop();
               firebase.database().ref('questions/3').transaction(function (post) {
                 if (post.isReady) {
-                  post.currentAnswerer = pushKey;
+                  post.currentAnswererKey = pushKey;
                   post.isReady = false;
                 }
 
