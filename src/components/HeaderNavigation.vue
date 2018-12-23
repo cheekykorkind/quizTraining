@@ -9,7 +9,11 @@
       v-if="currentUser"
       target="nav_collapse"
     />
-    <b-collapse is-nav id="nav_collapse">
+    <b-collapse
+      v-if="currentUser"
+      is-nav
+      id="nav_collapse"
+    >
       <b-navbar-nav>
         <b-nav-item
           v-if="currentUser.answerer"
