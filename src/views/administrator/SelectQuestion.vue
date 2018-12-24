@@ -13,8 +13,7 @@
 
 <script>
 import Administrator from "./mixins/Administrator";
-import { mapState, mapGetters } from "vuex";
-import firebase from "firebase";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "SelectQuestion",
@@ -45,8 +44,10 @@ export default {
   },
   created() {},
   methods: {
+    ...mapActions({
+      select: 'question/select' // `this.add()` を `this.$store.dispatch('increment')` にマッピングする
+    }),
     onClick(item) {
-      const questionsRef = firebase.database().ref('questions')
       let question = {
         number: item.number,
         sentence: item.sentence,
@@ -54,13 +55,7 @@ export default {
         visible: false,
       }
       if (item.image) question.image = item.image;
-      const key = questionsRef.push(question).key;
-      questionsRef.transaction((post) => {
-        if (post) {
-          post.currentQuestionKey = key;
-        }
-        return post;
-      })
+      this.select(question);
       this.$router.push({ name: "AdministratorSetQuestionStatus" });
     },
     isSelected(item) {
