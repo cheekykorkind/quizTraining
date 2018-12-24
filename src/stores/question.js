@@ -1,4 +1,5 @@
 import { firebaseAction } from "vuexfire";
+import firebase from "firebase";
 
 export default {
   namespaced: true,
@@ -38,5 +39,15 @@ export default {
     setListRef: firebaseAction(({ bindFirebaseRef }, ref) => {
       bindFirebaseRef("list", ref);
     }),
+    select(_contect, question) {
+      const questionsRef = firebase.database().ref('questions')
+      const key = questionsRef.push(question).key;
+      questionsRef.transaction((post) => {
+        if (post) {
+          post.currentQuestionKey = key;
+        }
+        return post;
+      });
+    }
   }
 };
