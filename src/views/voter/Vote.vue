@@ -1,14 +1,52 @@
 <template>
-  <div>
-    <h1>Vote</h1>
-    <div v-if="currentQuestion">現在の問題：{{ currentQuestion.sentence }}</div>
-    <b-button
-      size="lg"
-      variant="primary"
-      @click="vote"
-      :disabled="isDistable()"
-    > IPPON!! </b-button>
-  </div>
+  <b-container>
+    <b-row>
+      <b-col>
+        <h1>投票画面</h1>
+      </b-col>
+    </b-row>
+    <div v-if="currentUser">
+      <b-row>
+        <b-col>
+          <h3>あなたの名前</h3>
+          <p>{{ currentUser.name }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <h3>お題</h3>
+          <p v-if="currentQuestion && currentQuestion.visible">
+            {{ currentQuestion.sentence }}
+          </p>
+          <p v-else>
+            次のお題をお待ち下さい
+          </p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <h3>投票</h3>
+          <p>
+            回答が面白かった場合はこのボタンを押してください
+          </p>
+          <div v-if="currentQuestion && currentQuestion.visible">
+            <div v-if="currentAnswerer && currentAnswerer.votable">
+              <b-button :disabled="!this.currentUser.isVotable" size="lg" variant="primary" :block="true" @click="vote" > IPPON!! </b-button>
+            </div>
+            <div v-else>
+              <b-button :disabled="true" size="lg" variant="primary" :block="true">次の回答をお待ちください</b-button>
+            </div>
+          </div>
+          <div v-else>
+            <b-button :disabled="true" size="lg" variant="primary" :block="true">次のお題をお待ちください</b-button>
+          </div>
+        </b-col>
+      </b-row>
+    </div>
+    <div v-else>
+      ログインしてください
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -35,12 +73,6 @@ export default {
     }),
   },
   methods: {
-    isDistable() {
-      if (this.currentAnswererKey == 'none') {
-        return true;
-      }
-      return !this.currentUser.isVotable;
-    },
     vote() {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {

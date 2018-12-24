@@ -1,52 +1,60 @@
 <template>
-  <div>
-    <h1>お題進行</h1>
-    <div>
-      お題状態 : {{currentQuestion && currentQuestion.visible}}
-    </div>
-    <div>
-      お題内容 : {{currentQuestion && currentQuestion.sentence}}
-    </div>
-    <div>
-      現在回答者 : {{ currentAnswerer && getUser(currentAnswerer.uid).name }}
-    </div>
-    <div>
-      回答受付状況 : {{currentQuestion && currentQuestion.isReady}}
-    </div>
-    <div>
-      投票受付状況 : {{currentAnswerer && currentAnswerer.answerable}}
-    </div>
-
-    <!-- questions/{key}/visible --> <!-- true -->
-    <b-button variant="primary" @click="startQuiz()">
-      お題表示
-    </b-button>
-    <br/>
-
-    <!-- questions/{key}/isReady -->
-    <b-button variant="success" @click="startAnswer()">
-      回答受付
-    </b-button>
-    <br/>
-
-    <!-- questions/{key}/answerer/{key}/answerable -->
-    <b-button variant="success" @click="startVote()">
-      投票始め
-    </b-button>
-    <br/>
-
-    <!-- questions/{key}/answerer/{key}/answerable -->
-    <b-button variant="success" @click="endVote()">
-      投票終了
-    </b-button>
-    <br/>
-
-    <!-- questions/{key}/visible --> <!-- false, 遷移(出題画面) -->
-    <b-button variant="danger" @click="endQuiz()">
-      お題終了
-    </b-button>
-    <br/>
-  </div>
+  <b-container>
+    <b-row>
+      <b-col>
+        <h1>お題進行画面</h1>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <h3>モニタリング</h3>
+        <h4>お題表示</h4>
+        {{(currentQuestion && currentQuestion.visible) || 'なし'}}
+        <h4>お題内容</h4>
+        {{(currentQuestion && currentQuestion.sentence) || 'なし'}}
+        <h4>回答者</h4>
+        {{(currentAnswerer && getUser(currentAnswerer.uid).name) || 'なし'}}
+        <h4>回答受付</h4>
+        {{(currentQuestion && currentQuestion.isReady) || 'なし'}}
+        <h4>投票受付</h4>
+        {{(currentAnswerer && currentAnswerer.votable) || 'なし'}}
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <h3>進行</h3>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-button :disabled="!currentQuestion || currentQuestion.visible"
+                  variant="primary"
+                  @click="startQuiz()">
+          お題表示
+        </b-button>
+        <b-button :disabled="!currentQuestion || !currentQuestion.visible || currentQuestion.isReady || (currentAnswerer && currentAnswerer.votable)"
+                  variant="success"
+                  @click="startAnswer()">
+          回答受付
+        </b-button>
+        <b-button :disabled="!currentQuestion || !currentQuestion.isReady || !currentAnswerer || currentAnswerer.votable"
+                  variant="success"
+                  @click="startVote()">
+          投票始め
+        </b-button>
+        <b-button :disabled="!currentAnswerer || !currentAnswerer.votable"
+                  variant="success"
+                  @click="endVote()">
+          投票終了
+        </b-button>
+        <b-button :disabled="(!currentQuestion || !currentQuestion.visible)"
+                  variant="danger"
+                  @click="endQuiz()">
+          お題終了
+        </b-button>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -102,7 +110,7 @@ export default {
 
       firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
         post.isReady = false;
-        post.answerer[currentAnswererKey].answerable = true;
+        post.answerer[currentAnswererKey].votable = true;
 
         return post;
       });
@@ -112,7 +120,7 @@ export default {
       let currentAnswererKey = this.currentAnswererKey;
 
       firebase.database().ref('questions/'+currentQuestionKey).transaction(function (post) {
-        post.answerer[currentAnswererKey].answerable = false;
+        post.answerer[currentAnswererKey].votable = false;
 
         return post;
       });
