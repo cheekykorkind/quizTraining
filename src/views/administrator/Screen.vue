@@ -155,7 +155,7 @@ export default {
       return this.currentAnswerer.isIppon;
     },
     isFixed() {
-      if (!this.currentAnswerer.answerable) {
+      if (!this.currentAnswerer.votable) {
         return false;
       }
       return true;
