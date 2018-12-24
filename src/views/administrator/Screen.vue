@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 2vh 2vw;">
-    <div v-if="currentQuestion">
+    <div v-if="currentQuestion && currentQuestion.visible">
       <div v-if="currentQuestion.image">
         <div style="text-align: left; padding: 0 1.5rem; font-size: 2rem; font-weight: bold;">
           <label> お題 : </label> {{ currentQuestion.sentence }}
@@ -61,6 +61,11 @@
             <b-progress-bar v-if="values[9]" class="progress-custom" :value="values[9]"></b-progress-bar>
           </b-progress>
         </div>
+      </div>
+    </div>
+    <div v-else>
+      <div style="text-align: left; padding: 0 1.5rem; font-size: 4rem; font-weight: bold; height: 50vh;">
+        次のお題をお待ち下さい
       </div>
     </div>
     <!-- <div v-if="isIppon && !isClose" style=" -->
@@ -144,9 +149,9 @@ export default {
         });
     },
     isIppon() {
-      if (!this.currentAnswerer) {
-        return false;
-      }
+      if (!this.currentQuestion) return false;
+      if (!this.currentQuestion.visible) return false;
+      if (!this.currentAnswerer) return false;
       return this.currentAnswerer.isIppon;
     },
     isFixed() {
