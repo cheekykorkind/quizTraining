@@ -66,6 +66,9 @@
                   @click="calPoints()">
           点数
         </b-button>
+        <div v-for="ipponUser in ipponUsers">
+          {{ ipponUser }}
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -81,7 +84,9 @@ export default {
   mixins: [Administrator],
   components: {},
   data() {
-    return {};
+    return {
+      ipponUsers: []
+    };
   },
   computed: {
     ...mapGetters({
@@ -150,38 +155,26 @@ export default {
       this.$router.push({ name: "AdministratorSelectQuestion" });
     },
     calPoints() {
-      // firebase.database().ref('users').once('value').then(function(snapshot) {
-      //   let uids = Object.keys(snapshot.val())
-      //   console.log(uids);
-      // });
-
-      firebase.database().ref('questions').once('value').then(function(snapshot) {
-        let questionKeys = Object.keys(snapshot.val())
+      var _this = this;
+      
+      firebase.database().ref('questions').once('value').then((snapshot) => {
+        let ipponUsers = [];
         let questionObjs = snapshot.val();
 
         for (let k1 in questionObjs) {
           if (k1 == 'currentQuestionKey') continue;
           let question = questionObjs[k1];
-          // console.log(question);
           for (let k2 in question) {
             if (k2 != 'answerer') continue;
-            console.log(question[k2]);
+            let answerer = question[k2];
+            for (let k3 in answerer) {
+              if (answerer[k3].isIppon == false) continue;
+              ipponUsers.push(answerer[k3].uid);
+            }
           }
         }
 
-        // questionKeys.forEach(k => {
-        //   if (k == 'currentQuestionKey') return;
-
-        //   let answerer = questionObj[k].answerer;
-        //   let properties = Object.keys(answerer)
-
-        //   properties.forEach(property => {
-        //     console.log(answerer[property]);
-        //     console.log(answerer[property].isIppon);
-        //     console.log(answerer[property].uid);
-        //   });
-        // });
-
+        _this.ipponUsers = ipponUsers;
       });
     },
   }
