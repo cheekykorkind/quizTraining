@@ -29,7 +29,7 @@
           <p>
             スケッチブックに回答を書いてからこのボタンを押してください
           </p>
-          <div v-if="currentQuestion && currentQuestion.visible">
+          <div v-if="currentQuestion && currentQuestion.isReady">
             <div v-if="!currentAnswerer">
               <b-button size="lg" variant="primary" :block="true" @click="answer">回答する</b-button>
             </div>
@@ -43,7 +43,7 @@
             </div>
           </div>
           <div v-else>
-            <b-button :disabled="true" size="lg" variant="primary" :block="true">次のお題をお待ちください</b-button>
+            <b-button :disabled="true" size="lg" variant="primary" :block="true">回答開始をお待ちください</b-button>
           </div>
         </b-col>
       </b-row>
