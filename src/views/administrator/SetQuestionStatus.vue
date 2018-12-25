@@ -174,11 +174,11 @@ export default {
       
       firebase.database().ref('questions').once('value').then((snapshot) => {
         let unsortedIpponUsers = [];
-        let questionObjs = snapshot.val();
+        let questionObj = snapshot.val();
 
-        for (let k1 in questionObjs) {
+        for (let k1 in questionObj) {
           if (k1 == 'currentQuestionKey') continue;
-          let question = questionObjs[k1];
+          let question = questionObj[k1];
           for (let k2 in question) {
             if (k2 != 'answerer') continue;
             let answerer = question[k2];
@@ -190,6 +190,7 @@ export default {
           }
         }
 
+        // 重複を数えてOjbectsのPropertyにまとめて配列に変える
         let countedIpponUsers = {};
         unsortedIpponUsers.forEach(function(x) {
           countedIpponUsers[x] = (countedIpponUsers[x] || 0) + 1; 
@@ -203,17 +204,6 @@ export default {
         }
 
         _this.ipponUsers = ipponUsers;
-        // _this.fields= [
-        //   {
-        //     key: 'name',
-        //     sortable: false
-        //   },
-        //   {
-        //     key: 'ipponCount',
-        //     sortable: true
-        //   }
-        // ];
-
       });
     },
   }
