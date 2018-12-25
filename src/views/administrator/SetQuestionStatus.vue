@@ -19,6 +19,12 @@
         <h4>投票受付</h4>
         {{(currentAnswerer && currentAnswerer.votable) || 'なし'}}
       </b-col>
+      <b-col >
+        <div v-if="ipponUsers" class="text-center">
+          IPPON得点
+        </div>
+        <b-table v-if="fields" striped :items="ipponUsers" :fields="fields"></b-table>
+      </b-col>
     </b-row>
     <b-row>
       <b-col>
@@ -67,11 +73,6 @@
           点数
         </b-button>
       </b-col>
-      <b-col>
-        <div v-for="ipponUser in ipponUsers">
-          {{ ipponUser.name }} {{ ipponUser.ipponCount }}
-        </div>
-      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -87,6 +88,18 @@ export default {
   components: {},
   data() {
     return {
+      fields: [
+        {
+          key: 'name',
+          label: '名前',
+          sortable: false
+        },
+        {
+          key: 'ipponCount',
+          label: 'ippon数',
+          sortable: true
+        }
+      ],
       ipponUsers: []
     };
   },
@@ -190,6 +203,17 @@ export default {
         }
 
         _this.ipponUsers = ipponUsers;
+        // _this.fields= [
+        //   {
+        //     key: 'name',
+        //     sortable: false
+        //   },
+        //   {
+        //     key: 'ipponCount',
+        //     sortable: true
+        //   }
+        // ];
+
       });
     },
   }
