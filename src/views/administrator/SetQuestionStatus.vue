@@ -19,6 +19,12 @@
         <h4>投票受付</h4>
         {{(currentAnswerer && currentAnswerer.votable) || 'なし'}}
       </b-col>
+      <b-col >
+        <div v-if="ipponUsers" class="text-center">
+          IPPON得点
+        </div>
+        <b-table v-if="fields" striped :items="ipponUsers" :fields="fields"></b-table>
+      </b-col>
     </b-row>
     <b-row>
       <b-col>
@@ -27,30 +33,44 @@
     </b-row>
     <b-row>
       <b-col>
+        <!-- questions/{key}/visible --> <!-- true -->
         <b-button :disabled="!currentQuestion || currentQuestion.visible"
                   variant="primary"
                   @click="startQuiz()">
           お題表示
         </b-button>
+
+        <!-- questions/{key}/isReady -->
         <b-button :disabled="!currentQuestion || !currentQuestion.visible || currentQuestion.isReady || (currentAnswerer && currentAnswerer.votable)"
                   variant="success"
                   @click="startAnswer()">
           回答受付
         </b-button>
+
+        <!-- questions/{key}/answerer/{key}/answerable -->
         <b-button :disabled="!currentQuestion || !currentQuestion.isReady || !currentAnswerer || currentAnswerer.votable"
                   variant="success"
                   @click="startVote()">
           投票始め
         </b-button>
+
+        <!-- questions/{key}/answerer/{key}/answerable -->
         <b-button :disabled="!currentAnswerer || !currentAnswerer.votable"
                   variant="success"
                   @click="endVote()">
           投票終了
         </b-button>
+
+        <!-- questions/{key}/visible --> <!-- false, 遷移(出題画面) -->
         <b-button :disabled="(!currentQuestion || !currentQuestion.visible)"
                   variant="danger"
                   @click="endQuiz()">
           お題終了
+        </b-button>
+
+        <b-button variant="danger"
+                  @click="calPoints()">
+          点数
         </b-button>
       </b-col>
     </b-row>
@@ -67,7 +87,21 @@ export default {
   mixins: [Administrator],
   components: {},
   data() {
-    return {};
+    return {
+      fields: [
+        {
+          key: 'name',
+          label: '名前',
+          sortable: false
+        },
+        {
+          key: 'ipponCount',
+          label: 'ippon数',
+          sortable: true
+        }
+      ],
+      ipponUsers: []
+    };
   },
   computed: {
     ...mapGetters({
@@ -79,6 +113,7 @@ export default {
     }),
     ...mapState({
       users: state => state.user.list,
+      questions: state => state.question.list,
     })
   },
   created() {},
@@ -133,6 +168,43 @@ export default {
         return post;
       });
       this.$router.push({ name: "AdministratorSelectQuestion" });
+    },
+    calPoints() {
+      var _this = this;
+      
+      firebase.database().ref('questions').once('value').then((snapshot) => {
+        let unsortedIpponUsers = [];
+        let questionObj = snapshot.val();
+
+        for (let k1 in questionObj) {
+          if (k1 == 'currentQuestionKey') continue;
+          let question = questionObj[k1];
+          for (let k2 in question) {
+            if (k2 != 'answerer') continue;
+            let answerer = question[k2];
+            for (let k3 in answerer) {
+              let user = answerer[k3];
+              if (user.isIppon == false) continue;
+              unsortedIpponUsers.push(user.uid);
+            }
+          }
+        }
+
+        // 重複を数えてOjbectsのPropertyにまとめて配列に変える
+        let countedIpponUsers = {};
+        unsortedIpponUsers.forEach(function(x) {
+          countedIpponUsers[x] = (countedIpponUsers[x] || 0) + 1; 
+        });
+        let ipponUsers = [];
+        for (let uid in countedIpponUsers) {
+          ipponUsers.push({
+            'name': _this.getUser(uid).name,
+            'ipponCount': countedIpponUsers[uid]
+          });
+        }
+
+        _this.ipponUsers = ipponUsers;
+      });
     },
   }
 };
