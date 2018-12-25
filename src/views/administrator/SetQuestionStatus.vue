@@ -66,8 +66,10 @@
                   @click="calPoints()">
           点数
         </b-button>
+      </b-col>
+      <b-col>
         <div v-for="ipponUser in ipponUsers">
-          {{ ipponUser }}
+          {{ ipponUser.name }} {{ ipponUser.ipponCount }}
         </div>
       </b-col>
     </b-row>
@@ -158,7 +160,7 @@ export default {
       var _this = this;
       
       firebase.database().ref('questions').once('value').then((snapshot) => {
-        let ipponUsers = [];
+        let unsortedIpponUsers = [];
         let questionObjs = snapshot.val();
 
         for (let k1 in questionObjs) {
@@ -168,10 +170,23 @@ export default {
             if (k2 != 'answerer') continue;
             let answerer = question[k2];
             for (let k3 in answerer) {
-              if (answerer[k3].isIppon == false) continue;
-              ipponUsers.push(answerer[k3].uid);
+              let user = answerer[k3];
+              if (user.isIppon == false) continue;
+              unsortedIpponUsers.push(user.uid);
             }
           }
+        }
+
+        let countedIpponUsers = {};
+        unsortedIpponUsers.forEach(function(x) {
+          countedIpponUsers[x] = (countedIpponUsers[x] || 0) + 1; 
+        });
+        let ipponUsers = [];
+        for (let uid in countedIpponUsers) {
+          ipponUsers.push({
+            'name': _this.getUser(uid).name,
+            'ipponCount': countedIpponUsers[uid]
+          });
         }
 
         _this.ipponUsers = ipponUsers;
