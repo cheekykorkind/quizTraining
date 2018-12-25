@@ -144,18 +144,31 @@ export default {
 
       firebase.database().ref('questions').once('value').then(function(snapshot) {
         let questionKeys = Object.keys(snapshot.val())
-        let questionObj = snapshot.val();
-        // console.log(snapshot.val());
-        questionKeys.forEach(k => {
-          if (k == 'currentQuestionKey') return;
+        let questionObjs = snapshot.val();
 
-          let answerer = questionObj[k].answerer;
-          let properties = Object.keys(answerer)
+        for (let k1 in questionObjs) {
+          if (k1 == 'currentQuestionKey') continue;
+          let question = questionObjs[k1];
+          // console.log(question);
+          for (let k2 in question) {
+            if (k2 != 'answerer') continue;
+            console.log(question[k2]);
+          }
+        }
 
-          properties.forEach(property => {
-            console.log(answerer[property]);
-          });
-        });
+        // questionKeys.forEach(k => {
+        //   if (k == 'currentQuestionKey') return;
+
+        //   let answerer = questionObj[k].answerer;
+        //   let properties = Object.keys(answerer)
+
+        //   properties.forEach(property => {
+        //     console.log(answerer[property]);
+        //     console.log(answerer[property].isIppon);
+        //     console.log(answerer[property].uid);
+        //   });
+        // });
+
       });
     },
   }
