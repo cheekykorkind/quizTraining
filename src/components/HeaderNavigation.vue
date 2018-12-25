@@ -2,7 +2,7 @@
   <b-navbar
     toggleable="md"
     type="dark"
-    variant="info"
+    style="background-color: #e22551;"
   >
     <b-navbar-brand href="#"> Fusic忘年会2018! </b-navbar-brand>
     <b-navbar-toggle
@@ -33,6 +33,7 @@
           text="管理"
           right
         >
+          <b-dropdown-item to="/administrator/selectAnswerer"> 解答者選択 </b-dropdown-item>
           <b-dropdown-item to="/administrator/selectQuestion"> 出題 </b-dropdown-item>
           <b-dropdown-item to="/administrator/setQuestionStatus"> お題進行 </b-dropdown-item>
           <b-dropdown-item to="/administrator/screen"> スクリーン </b-dropdown-item>
@@ -63,3 +64,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.navbar-brand {
+  font-weight: bold;
+}
+</style>

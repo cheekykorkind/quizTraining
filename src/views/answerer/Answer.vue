@@ -1,11 +1,57 @@
 <template>
-  <div>
-    <h1>Answer</h1>
-    <div v-if="currentUser">ログイン中のユーザ：{{ currentUser.name }}</div>
-    <div v-if="currentQuestion">現在の問題：{{ currentQuestion.sentence }}</div>
-    <div v-if="currentAnswerer && currentUser && currentAnswerer.uid == currentUser.uid">あなたが回答者です</div>
-    <b-button :disabled="isAnswerable() == false" size="lg" variant="primary" @click="answer">回答する</b-button>
-  </div>
+  <b-container>
+    <b-row>
+      <b-col>
+        <h1>回答画面</h1>
+      </b-col>
+    </b-row>
+    <div v-if="currentUser">
+      <b-row>
+        <b-col>
+          <h3>あなたの名前</h3>
+          <p>{{ currentUser.name }}</p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <h3>お題</h3>
+          <p v-if="currentQuestion && currentQuestion.visible">
+            {{ currentQuestion.sentence }}
+          </p>
+          <p v-else>
+            次のお題をお待ち下さい
+          </p>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <h3>回答</h3>
+          <p>
+            スケッチブックに回答を書いてからこのボタンを押してください
+          </p>
+          <div v-if="currentQuestion && currentQuestion.visible">
+            <div v-if="!currentAnswerer">
+              <b-button size="lg" variant="primary" :block="true" @click="answer">回答する</b-button>
+            </div>
+            <div v-else>
+              <div v-if="currentAnswerer.uid == currentUser.uid">
+                <b-button :disabled="true" size="lg" variant="primary" :block="true">あなたが回答者です。回答してください</b-button>
+              </div>
+              <div v-else>
+                <b-button :disabled="true" size="lg" variant="primary" :block="true">他の回答者が回答中です</b-button>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <b-button :disabled="true" size="lg" variant="primary" :block="true">次のお題をお待ちください</b-button>
+          </div>
+        </b-col>
+      </b-row>
+    </div>
+    <div v-else>
+      ログインしてください
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -27,14 +73,6 @@ export default {
     }),
   },
   methods: {
-    isAnswerable() {
-      if (!this.currentUser) return false
-      if (!this.currentQuestion) return false
-      if (!this.currentQuestion.isReady) return false
-      if (!this.currentAnswererKey) return false
-      if (this.currentAnswererKey != 'none') return false
-      return true
-    },
     answer() {
       let postData = {
         uid : this.currentUser.uid,
