@@ -21,13 +21,16 @@
       </div>
     </div>
 
-    <b-button
-      size="lg"
-      variant="primary"
-      @click="doLogin()"
-    >
-      ログイン
-    </b-button>
+    <div style="display: flex; justify-content: center; align-items: center;">
+      <b-button
+        size="lg"
+        variant="primary"
+        @click="doLogin()"
+        style="font-weight: bold; background-color: #3F51B5; border: none;"
+      >
+        ログイン
+      </b-button>
+    </div>
   </div>
 </template>
 
