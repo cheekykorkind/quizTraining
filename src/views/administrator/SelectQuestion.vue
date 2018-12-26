@@ -1,14 +1,22 @@
 <template>
-  <div>
-    <h1>出題</h1>
-    <b-table striped hover :items="questionMasters" :fields="fields">
-      <template slot="buttons" slot-scope="data">
-        <b-button v-if="isSelected(data.item) == false" @click="onClick(data.item)">
-          出題する
-        </b-button>
-      </template>
-    </b-table>
-  </div>
+  <b-container>
+    <b-row>
+      <b-col>
+        <h1>出題画面</h1>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-table striped hover :items="questionMasters" :fields="fields">
+          <template slot="buttons" slot-scope="data">
+            <b-button v-if="isSelected(data.item) == false" @click="onClick(data.item)">
+              出題する
+            </b-button>
+          </template>
+        </b-table>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
