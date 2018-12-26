@@ -1,5 +1,86 @@
 <template>
-  <h1>Team</h1>
+  <div id="team-page-wrap">
+    <div id="team-wrap">
+      <h1 class="team"> Team </h1>
+      <div style="padding: 0 3vw;">
+        <h2> 納富チーム </h2>
+        <ul>
+          <li> 美穂 </li>
+          <li> 金子 </li>
+          <li> ドヒョン </li>
+          <li> 内田 </li>
+        </ul>
+
+        <h2> 浜崎チーム </h2>
+        <ul>
+          <li> 篠原 </li>
+          <li> 政谷 </li>
+          <li> 萩原 </li>
+          <li> 甲斐 </li>
+          <li> 吉野 </li>
+        </ul>
+
+        <h2> 櫻川チーム </h2>
+        <ul>
+          <li> 荒川 </li>
+          <li> 古賀 </li>
+          <li> 高瀬 </li>
+          <li> 伊藤 </li>
+          <li> ウソク </li>
+        </ul>
+
+        <h2> 杉本チーム </h2>
+        <ul>
+          <li> 徳永 </li>
+          <li> 新川 </li>
+          <li> 吉武  </li>
+          <li> 野上 </li>
+          <li> 嶋生 </li>
+        </ul>
+
+        <h2> 横田チーム </h2>
+        <ul>
+          <li> 岡部 </li>
+          <li> 小原 </li>
+          <li> 南部 </li>
+          <li> 山路 </li>
+          <li> 毛利 </li>
+        </ul>
+
+        <h2> 安元チーム </h2>
+        <ul>
+          <li> 巴山 </li>
+          <li> 濱野 </li>
+          <li> 早﨑 </li>
+          <li> 広沢 </li>
+          <li> 安河内 </li>
+        </ul>
+
+        <h2> 島田チーム </h2>
+        <ul>
+          <li> ゆっきー </li>
+          <li> ジョン </li>
+          <li> 渡辺 </li>
+          <li> 竹田 </li>
+          <li> 清家 </li>
+        </ul>
+
+        <h2> 山本チーム </h2>
+        <ul>
+          <li> 船越 </li>
+          <li> 加賀澤 </li>
+          <li> 紗慧 </li>
+          <li> 畠中 </li>
+          <li> 浦田 </li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="schedule-wrap">
+      <h1> Schedule </h1>
+      <b-table stacked :items="items"></b-table>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -9,7 +90,28 @@ export default {
   name: "Team",
   components: {},
   data() {
-    return {};
+    return {
+      items: [
+        {
+          '15:00 - 15:10' : '一次会オープニング(司会の紹介,会場の諸注意,プログラム説明)',
+          '15:10 - 15:20' : '乾杯',
+          '15:20 - 15:35' : '360発表',
+          '15:35 - 16:05' : '半期目標',
+          '16:05 - 17:05' : 'ipponグランプリ / クイズ系',
+          '17:05 - 17:20' : '一次会クロージング',
+          '17:20 - 18:20' : '移動　アンダースピン（博多区中洲３-７－２４　ｇａｔｅ’s８F）',
+          '18:20 - 18:30' : '二次会オープニング（乾杯：浜さん）',
+          '18:30 - 19:30' : '卓球大会ｗ',
+          '19:30 - 19:40' : '結果発表 & 罰ゲーム？景品？',
+          '19:40 - 19:55' : '余興1',
+          '19:55 - 20:10' : '余興2',
+          '20:10 - 20:25' : '余興3',
+          '20:25 - 20:35' : '歓談（バッファ）',
+          '20:35 - 20:45' : '二次会クロージング（納富さんから一言）',
+          '20:45 - 21:00' : '完全撤退'
+        }
+      ]
+    };
   },
   created() {
     firebase.auth().onAuthStateChanged(u => {
@@ -27,3 +129,35 @@ export default {
   methods: {}
 };
 </script>
+
+<style lang="scss" scoped>
+h1.team {
+  border-bottom: solid 0.4rem #dee2e6;
+}
+
+h2 {
+  font-size: 1.3rem;
+  margin-top: 2rem;
+  font-weight: bold;
+  background: #ED8077;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  width: 140px;
+}
+
+li {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #363636;
+}
+
+#team-page-wrap {
+  padding: 1rem;
+}
+
+#schedule-wrap {
+  margin-top: 5rem;
+}
+</style>
+
