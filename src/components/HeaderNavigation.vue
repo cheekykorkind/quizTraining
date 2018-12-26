@@ -2,7 +2,10 @@
   <b-navbar
     toggleable="md"
     type="dark"
-    style="background-color: #e22551;"
+    style="
+      background: rgb(75,176,176);
+      background: linear-gradient(90deg, rgba(75,176,176,1) 50%, rgba(153,204,204,1) 100%);
+    "
   >
     <b-navbar-brand href="#"> Fusic忘年会2018! </b-navbar-brand>
     <b-navbar-toggle
