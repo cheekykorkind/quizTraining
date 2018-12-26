@@ -1,4 +1,5 @@
 import { firebaseAction } from "vuexfire";
+import firebase from "firebase";
 
 export default {
   namespaced: true,
@@ -35,8 +36,15 @@ export default {
     setListRef: firebaseAction(({ bindFirebaseRef }, ref) => {
       bindFirebaseRef("list", ref);
     }),
-    select(context, uids) {
-      console.log(uids);
+    select({state}, uids) {
+      uids.forEach(uid => {
+        const user = state.list.find(u => u['.key'] == uid);
+        if (user) {
+          firebase.database().ref('users/' + uid).child('answerer').set(true)
+        } else {
+          firebase.database().ref('users/' + uid).child('answerer').set(false)
+        }
+      });
     }
   }
 };

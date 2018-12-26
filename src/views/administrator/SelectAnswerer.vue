@@ -10,7 +10,7 @@
         <p>{{selected.length}}人を選択中です</p>
       </b-col>
       <b-col>
-        <b-button :disabled="selected.length <= 0" @click="select(selected)">
+        <b-button :disabled="selected.length <= 0" @click="onClick(selected)">
           登録する
         </b-button>
       </b-col>
@@ -50,6 +50,10 @@ export default {
     ...mapActions({
       select: 'user/select'
     }),
+    onClick(uids) {
+      this.select(uids);
+      this.$router.push({ name: "AdministratorSelectQuestion" });
+    }
   }
 };
 </script>
