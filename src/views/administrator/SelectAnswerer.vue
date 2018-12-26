@@ -1,27 +1,55 @@
 <template>
-  <div>
-  </div>
+  <b-container>
+    <b-row>
+      <b-col>
+        <h1>回答者選択画面</h1>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col>
+        <p>{{selected.length}}人を選択中です</p>
+      </b-col>
+      <b-col>
+        <b-button :disabled="selected.length <= 0" @click="select(selected)">
+          登録する
+        </b-button>
+      </b-col>
+    </b-row>
+    <b-row>
+    </b-row>
+    <b-row>
+      <b-col>
+        <b-form-group>
+          <b-form-checkbox-group stacked id="checkboxes" name="answerer" v-model="selected" :options="options"/>
+        </b-form-group>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
 import Administrator from "./mixins/Administrator";
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 import firebase from "firebase";
 
 export default {
   name: "SelectAnswerer",
   mixins: [Administrator],
   computed: {
-    ...mapState({
-      questionMasters: state => state.questionMaster.list,
-      questions: state => state.question.list,
-    })
+    ...mapGetters({
+      options: 'user/options',
+    }),
+  },
+  data() {
+    return {
+      selected: []
+    }
   },
   components: {},
   methods: {
-    test() {
-        console.log('test');
-    }
+    ...mapActions({
+      select: 'user/select'
+    }),
   }
 };
 </script>

@@ -21,10 +21,22 @@ export default {
       currentUser['uid'] = state.uid;
       return currentUser;
     },
+    options: (state) => {
+      return state.list.map(u => {
+        return {text: u.name, value: u['.key']}
+      }).sort((u1, u2) => {
+        if (u1.text > u2.text) return 1;
+        else if(u2.text > u1.text) return -1;
+        else return 0;
+      })
+    }
   },
   actions: {
     setListRef: firebaseAction(({ bindFirebaseRef }, ref) => {
       bindFirebaseRef("list", ref);
     }),
+    select(context, uids) {
+      console.log(uids);
+    }
   }
 };
