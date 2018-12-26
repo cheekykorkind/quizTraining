@@ -43,23 +43,7 @@
             :animated="isFixed()"
             show-progress
             class="mb-2"
-          >
-          </b-progress>
-          <b-progress
-            height="4rem"
-            :animated="isFixed()"
-          >
-            <b-progress-bar v-if="values[0]" class="progress-custom" :value="values[0]"></b-progress-bar>
-            <b-progress-bar v-if="values[1]" class="progress-custom" :value="values[1]"></b-progress-bar>
-            <b-progress-bar v-if="values[2]" class="progress-custom" :value="values[2]"></b-progress-bar>
-            <b-progress-bar v-if="values[3]" class="progress-custom" :value="values[3]"></b-progress-bar>
-            <b-progress-bar v-if="values[4]" class="progress-custom" :value="values[4]"></b-progress-bar>
-            <b-progress-bar v-if="values[5]" class="progress-custom" :value="values[5]"></b-progress-bar>
-            <b-progress-bar v-if="values[6]" class="progress-custom" :value="values[6]"></b-progress-bar>
-            <b-progress-bar v-if="values[7]" class="progress-custom" :value="values[7]"></b-progress-bar>
-            <b-progress-bar v-if="values[8]" class="progress-custom" :value="values[8]"></b-progress-bar>
-            <b-progress-bar v-if="values[9]" class="progress-custom" :value="values[9]"></b-progress-bar>
-          </b-progress>
+          />
         </div>
       </div>
     </div>
@@ -137,8 +121,6 @@ export default {
       if (percentage >= 100) {
         this.getCurrentQuestion();
       }
-
-      this.values.push(10);
 
       return percentage;
     },
