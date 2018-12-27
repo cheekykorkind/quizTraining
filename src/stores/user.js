@@ -41,8 +41,6 @@ export default {
         const user = state.list.find(u => u['.key'] == uid);
         if (user) {
           firebase.database().ref('users/' + uid).child('answerer').set(true)
-        } else {
-          firebase.database().ref('users/' + uid).child('answerer').set(false)
         }
       });
     }
