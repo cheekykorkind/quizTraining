@@ -19,11 +19,11 @@
         <h4>投票受付</h4>
         {{(currentAnswerer && currentAnswerer.votable) || 'なし'}}
       </b-col>
-      <b-col >
-        <div v-if="ipponUsers" class="text-center">
-          IPPON得点
+      <b-col>
+        <div v-if="currentIpponUsers" class="text-center">
+          今回のIPPON得点
         </div>
-        <b-table v-if="fields" striped :items="ipponUsers" :fields="fields"></b-table>
+        <b-table v-if="fields" striped :items="currentIpponUsers" :fields="fields"></b-table>
       </b-col>
     </b-row>
     <b-row>
@@ -69,11 +69,27 @@
         </b-button>
 
         <b-button variant="danger"
-                  @click="calPoints()">
-          点数
+                  @click="calThisRoundPoints()">
+          今回の点数
         </b-button>
       </b-col>
     </b-row>
+     
+    <b-row class="m-5">
+      <b-col>
+        <b-button variant="danger"
+                  @click="calAllRoundPoints()">
+          全回の点数
+        </b-button>
+      </b-col>
+      <b-col>
+        <div v-if="allIpponUsers" class="text-center">
+          全回のIPPON得点
+        </div>
+        <b-table v-if="fields" striped :items="allIpponUsers" :fields="fields"></b-table>
+      </b-col>
+    </b-row>
+
   </b-container>
 </template>
 
@@ -100,7 +116,8 @@ export default {
           sortable: true
         }
       ],
-      ipponUsers: []
+      currentIpponUsers: [],
+      allIpponUsers: []
     };
   },
   computed: {
@@ -167,9 +184,13 @@ export default {
 
         return post;
       });
+
+      this.resetAnswerers();
       this.$router.push({ name: "AdministratorSelectQuestion" });
     },
-    calPoints() {
+
+    // 全ての点数を見せる
+    calAllRoundPoints() {
       var _this = this;
       
       firebase.database().ref('questions').once('value').then((snapshot) => {
@@ -203,9 +224,91 @@ export default {
           });
         }
 
-        _this.ipponUsers = ipponUsers;
+        _this.allIpponUsers = ipponUsers;
       });
     },
+
+    // 管理者以外は全員voterにする
+    resetAnswerers() {
+      let property = {
+        'admin': {
+          "administrator" : true,
+          "answerer" : false,
+          "isVotable" : false,
+          "voter" : false
+        },
+        'voter': {
+          "administrator" : false,
+          "answerer" : false,
+          "isVotable" : false,
+          "voter" : true
+        }
+      }
+      var _this = this;
+      firebase.database().ref('users').once('value').then(function(snapshot) {
+        let users = snapshot.val();
+        for (let k in users) {
+          if (_this.isAdmin(users[k].name)) {
+            firebase.database().ref('users/' + k).update(property['admin']);
+            continue;
+          }
+
+          firebase.database().ref('users/' + k).update(property['voter']);
+        }
+      });
+    },
+
+    isAdmin(userName) {
+      let adminNames = ['jiho', 'okazaki', 'kawano', 'juseung', 'y-nakamura'];
+      for (let i in adminNames) {
+        if (userName == adminNames[i]) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    // 今回の点数を見せる
+    calThisRoundPoints() {
+      var _this = this;
+      
+      firebase.database().ref('questions').once('value').then((snapshot) => {
+        let unsortedIpponUsers = [];
+        let questionObj = snapshot.val();
+
+        for (let k1 in questionObj) {
+          if (k1 == 'currentQuestionKey') continue;
+          let question = questionObj[k1];
+          for (let k2 in question) {
+            if (k2 != 'answerer') continue;
+            let answerer = question[k2];
+            for (let k3 in answerer) {
+              let user = answerer[k3];
+              if (user.isIppon == false) continue;
+              if (_this.getUser(user.uid).answerer == false) continue;
+
+              unsortedIpponUsers.push(user.uid); 
+            }
+          }
+        }
+
+        // 重複を数えてOjbectsのPropertyにまとめて配列に変える
+        let countedIpponUsers = {};
+        unsortedIpponUsers.forEach(function(x) {
+          countedIpponUsers[x] = (countedIpponUsers[x] || 0) + 1; 
+        });
+        let ipponUsers = [];
+        for (let uid in countedIpponUsers) {
+          ipponUsers.push({
+            'name': _this.getUser(uid).name,
+            'ipponCount': countedIpponUsers[uid]
+          });
+        }
+
+        _this.currentIpponUsers = ipponUsers;
+      });
+    }
   }
 };
 </script>
