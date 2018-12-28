@@ -41,7 +41,6 @@
             :value="calIpponPoint()"
             variant="warning"
             :animated="isFixed()"
-            show-progress
             class="mb-2"
           />
         </div>

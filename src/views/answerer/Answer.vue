@@ -1,8 +1,8 @@
 <template>
-  <b-container>
+  <b-container id="page-wrap">
     <b-row>
       <b-col>
-        <h1>回答画面</h1>
+        <h1> 回答画面 </h1>
       </b-col>
     </b-row>
     <div v-if="currentUser">
@@ -31,19 +31,43 @@
           </p>
           <div v-if="currentQuestion && currentQuestion.isReady">
             <div v-if="!currentAnswerer">
-              <b-button size="lg" variant="primary" :block="true" @click="answer">回答する</b-button>
+              <b-button
+                size="lg"
+                variant="primary"
+                :block="true"
+                @click="answer"
+                class="btn"
+              > 回答する </b-button>
             </div>
             <div v-else>
               <div v-if="currentAnswerer.uid == currentUser.uid">
-                <b-button :disabled="true" size="lg" variant="primary" :block="true">あなたが回答者です。回答してください</b-button>
+                <b-button
+                  :disabled="true"
+                  size="lg"
+                  variant="primary"
+                  :block="true"
+                  class="btn"
+                > あなたが回答者です。回答してください </b-button>
               </div>
               <div v-else>
-                <b-button :disabled="true" size="lg" variant="primary" :block="true">他の回答者が回答中です</b-button>
+                <b-button
+                  :disabled="true"
+                  size="lg"
+                  variant="primary"
+                  :block="true"
+                  class="btn"
+                > 他の回答者が回答中です </b-button>
               </div>
             </div>
           </div>
           <div v-else>
-            <b-button :disabled="true" size="lg" variant="primary" :block="true">回答開始をお待ちください</b-button>
+            <b-button
+              :disabled="true"
+              size="lg"
+              variant="primary"
+              :block="true"
+              class="btn"
+            > 回答開始をお待ちください </b-button>
           </div>
         </b-col>
       </b-row>
@@ -88,61 +112,33 @@ export default {
             return post;
           })
         });
-    },
-
-    // // 開発用。参考
-    // answerOld: () => {
-    //   firebase.auth().onAuthStateChanged(u => {
-    //     let uid = u.uid;
-
-    //     if (u) {
-    //       firebase.database().ref('questions/3/answerer').orderByChild("uid").equalTo(uid).once('value').then(function(snapshot) {
-    //         let pushKey = Object.keys(snapshot.val()).pop();
-    //         // console.log(pushKey);
-
-    //         return pushKey;
-    //       }).then(function(pushKey){
-    //         firebase.database().ref('questions/3').transaction(function (post) {
-    //           if (post.isReady) {
-    //             post.whoIsFirstAnswerer = pushKey;
-    //             post.isReady = false;
-    //           }
-
-    //           return post;
-    //         })
-    //       })
-    //     }
-
-    //   });
-    // },
-
-    // // 開発用。参考
-    // appendUser: () => {
-    //   firebase.auth().onAuthStateChanged(u => {
-    //     let _uid = u.uid;
-    //     let postData = {
-    //       uid : 'kawano'
-    //     };
-
-    //     if (u) {
-    //       firebase.database().ref('questions/3').child('answerer')
-    //         .push(postData)
-    //         .then(result => {
-    //           console.log("appendUser");
-    //         });
-    //     }
-    //   });
-    // },
-
-    // // 開発用。参考
-    // getUID: () => {
-    //   firebase.database().ref('questions/3/answerer').orderByChild("uid").equalTo('kawano').once('value').then(function(snapshot) {
-    //     let tempResult = Object.keys(snapshot.val()).pop();
-    //     return tempResult;
-    //   }).then(function(result){
-    //     console.log(result);
-    //   });
-    // }
+    }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+h1 {
+  border-bottom: solid 0.4rem #dee2e6;
+  font-weight: bold;
+}
+h3 {
+  margin-top: 2rem;
+  font-weight: bold;
+}
+#page-wrap {
+  padding: 1rem;
+}
+.btn {
+  height: 15vh;
+  background-color: #007bff;
+  border-color: #007bff;
+  font-size: 2.7vh;
+  font-weight: bold;
+  color: #fff;
+}
+p {
+  font-size: 1.2rem;
+  padding: 0 0.8rem;
+}
+</style>

@@ -1,8 +1,8 @@
 <template>
-  <b-container>
+  <b-container id="vote-page-wrap">
     <b-row>
       <b-col>
-        <h1>投票画面</h1>
+        <h1> 投票画面 </h1>
       </b-col>
     </b-row>
     <div v-if="currentUser">
@@ -31,14 +31,33 @@
           </p>
           <div v-if="currentQuestion && currentQuestion.visible">
             <div v-if="currentAnswerer && currentAnswerer.votable">
-              <b-button :disabled="!this.currentUser.isVotable" size="lg" variant="primary" :block="true" @click="vote" > IPPON!! </b-button>
+              <b-button
+                :disabled="!this.currentUser.isVotable"
+                size="lg"
+                variant="primary"
+                :block="true"
+                @click="vote"
+                class="btn"
+              > IPPON!! </b-button>
             </div>
             <div v-else>
-              <b-button :disabled="true" size="lg" variant="primary" :block="true">次の回答をお待ちください</b-button>
+              <b-button
+                :disabled="true"
+                size="lg"
+                variant="primary"
+                :block="true"
+                class="btn"
+              > 次の回答をお待ちください </b-button>
             </div>
           </div>
           <div v-else>
-            <b-button :disabled="true" size="lg" variant="primary" :block="true">次のお題をお待ちください</b-button>
+            <b-button
+              :disabled="true"
+              size="lg"
+              variant="primary"
+              :block="true"
+              class="btn"
+            > 次のお題をお待ちください </b-button>
           </div>
         </b-col>
       </b-row>
@@ -103,3 +122,30 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+h1 {
+  border-bottom: solid 0.4rem #dee2e6;
+  font-weight: bold;
+}
+h3 {
+  margin-top: 2rem;
+  font-weight: bold;
+}
+#vote-page-wrap {
+  padding: 1rem;
+}
+.btn {
+  height: 15vh;
+  background-color: #007bff;
+  border-color: #007bff;
+  font-size: 3vh;
+  font-weight: bold;
+  color: #fff;
+}
+p {
+  font-size: 1.2rem;
+  padding: 0 0.8rem;
+}
+</style>
+
