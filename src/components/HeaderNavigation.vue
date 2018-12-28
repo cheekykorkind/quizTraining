@@ -27,6 +27,7 @@
           to="/voter/vote"
         > 投票 </b-nav-item>
         <b-nav-item to="/team"> チーム </b-nav-item>
+        <b-nav-item to="/Schedule"> スケジュール </b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

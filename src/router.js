@@ -4,6 +4,7 @@ import Login from "./views/Login";
 import PermissionError from "./views/PermissionError";
 import VoterVote from "./views/voter/Vote";
 import Team from "./views/Team";
+import Schedule from "./views/Schedule";
 import AnswererAnswer from "./views/answerer/Answer";
 import AdministratorInputPoints from "./views/administrator/InputPoints";
 import AdministratorSelectPlayer from "./views/administrator/SelectPlayer";
@@ -35,6 +36,12 @@ let router = new Router({
       path: "/team",
       name: "Team",
       component: Team,
+      meta: { requireAuth: true }
+    },
+    {
+      path: "/Schedule",
+      name: "Schedule",
+      component: Schedule,
       meta: { requireAuth: true }
     },
     {
