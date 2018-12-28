@@ -64,6 +64,7 @@ export default {
     // ログアウト処理
     doLogout() {
       firebase.auth().signOut();
+      location.reload();
     }
   },
 };
